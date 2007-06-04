@@ -20,11 +20,14 @@ setup(name='Persistence',
       version = '2.11.0a1',
       url='http://svn.zope.org/Persistence',
       license='ZPL 2.1',
-      description='',
+      description='Persistent ExtensionClass',
       author='Zope Corporation and Contributors',
       author_email='zope-dev@zope.org',
-      long_description='',
-      
+      long_description="""\
+This package provides a variant of the persistent base class that's an
+ExtensionClass.  Unless you need ExtensionClass semantics, you
+probably want to use persistent.Persistent from ZODB3.""",
+
 	  packages=find_packages('src'),
 	  package_dir={'': 'src'},
 
