@@ -17,8 +17,8 @@ import os
 from setuptools import setup, find_packages, Extension
 
 setup(name='Persistence',
-      version = '2.11.0a1',
-      url='http://svn.zope.org/Persistence',
+      version = '2.11.0a2',
+      url='http://cheeseshop.python.org/pypi/Persistence',
       license='ZPL 2.1',
       description='Persistent ExtensionClass',
       author='Zope Corporation and Contributors',
