@@ -17,7 +17,7 @@ import os
 from setuptools import setup, find_packages, Extension
 
 setup(name='Persistence',
-      version = '2.11.0dev',
+      version = '2.11.0b1',
       url='http://cheeseshop.python.org/pypi/Persistence',
       license='ZPL 2.1',
       description='Persistent ExtensionClass',
