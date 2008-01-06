@@ -17,7 +17,7 @@ import os
 from setuptools import setup, find_packages, Extension
 
 setup(name='Persistence',
-      version = '2.11.0a2',
+      version = '2.11.0dev',
       url='http://cheeseshop.python.org/pypi/Persistence',
       license='ZPL 2.1',
       description='Persistent ExtensionClass',
@@ -28,8 +28,8 @@ This package provides a variant of the persistent base class that's an
 ExtensionClass.  Unless you need ExtensionClass semantics, you
 probably want to use persistent.Persistent from ZODB3.""",
 
-	  packages=find_packages('src'),
-	  package_dir={'': 'src'},
+      packages=find_packages('src'),
+      package_dir={'': 'src'},
 
       ext_modules=[Extension("Persistence._Persistence",
                              [os.path.join('src', 'Persistence',
