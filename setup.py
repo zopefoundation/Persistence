@@ -11,22 +11,22 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""Setup for the Acquisition egg package
+"""Setup for the Persistence distribution
 """
 import os
 from setuptools import setup, find_packages, Extension
 
+README = open('README.txt').read()
+CHANGES = open('CHANGES.txt').read()
+
 setup(name='Persistence',
-      version = '2.11.0dev',
-      url='http://cheeseshop.python.org/pypi/Persistence',
+      version = '2.12.0dev',
+      url='http://pypi.python.org/pypi/Persistence',
       license='ZPL 2.1',
       description='Persistent ExtensionClass',
       author='Zope Corporation and Contributors',
       author_email='zope-dev@zope.org',
-      long_description="""\
-This package provides a variant of the persistent base class that's an
-ExtensionClass.  Unless you need ExtensionClass semantics, you
-probably want to use persistent.Persistent from ZODB3.""",
+      long_description='\n\n'.join([README, CHANGES]),
 
       packages=find_packages('src'),
       package_dir={'': 'src'},

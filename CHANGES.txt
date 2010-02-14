@@ -1,0 +1,14 @@
+Changelog
+=========
+
+2.12.0 (unreleased)
+-------------------
+
+- Updated C includes to ExtensionClass 2.12.0.
+
+- Updated package metadata and remove old build artifacts.
+
+2.11.1 (2009-02-19)
+-------------------
+
+- First egg release.
