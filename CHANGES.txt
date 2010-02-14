@@ -4,6 +4,9 @@ Changelog
 2.12.0 (unreleased)
 -------------------
 
+- Added support for method cache in Persistence. Patch contributed by
+  Yoshinori K. Okuji. See https://bugs.launchpad.net/zope2/+bug/486193.
+
 - Updated C includes to ExtensionClass 2.12.0.
 
 - Updated package metadata and remove old build artifacts.

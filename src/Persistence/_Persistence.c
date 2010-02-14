@@ -129,7 +129,11 @@ static PyTypeObject Ptype = {
         /* tp_getattro       */ (getattrofunc)P_getattr,
         0, 0,
         /* tp_flags          */ Py_TPFLAGS_DEFAULT
-				| Py_TPFLAGS_BASETYPE ,
+				| Py_TPFLAGS_BASETYPE
+#ifdef Py_TPFLAGS_HAVE_VERSION_TAG
+				| Py_TPFLAGS_HAVE_VERSION_TAG
+#endif
+				,
 	/* tp_doc            */ "Persistent ExtensionClass",
 };
 
