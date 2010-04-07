@@ -1,6 +1,6 @@
 ##############################################################################
 #
-# Copyright (c) 2007 Zope Corporation and Contributors.
+# Copyright (c) 2007 Zope Foundation and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -24,7 +24,7 @@ setup(name='Persistence',
       url='http://pypi.python.org/pypi/Persistence',
       license='ZPL 2.1',
       description='Persistent ExtensionClass',
-      author='Zope Corporation and Contributors',
+      author='Zope Foundation and Contributors',
       author_email='zope-dev@zope.org',
       long_description='\n\n'.join([README, CHANGES]),
 
