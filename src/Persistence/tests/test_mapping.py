@@ -15,7 +15,7 @@
 $Id$
 """
 import unittest
-from zope.testing.doctest import DocTestSuite
+from doctest import DocTestSuite
 from Persistence import PersistentMapping
 
 def test_basic_functionality():
@@ -86,5 +86,3 @@ def test_suite():
     return unittest.TestSuite((
         DocTestSuite(),
         ))
-
-if __name__ == '__main__': unittest.main()

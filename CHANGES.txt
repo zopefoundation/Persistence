@@ -4,6 +4,7 @@ Changelog
 2.13.1 (unreleased)
 -------------------
 
+- Removed undeclared testing dependency on zope.testing.
 
 2.13.0 (2010-02-23)
 -------------------

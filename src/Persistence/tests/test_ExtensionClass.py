@@ -11,231 +11,219 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""Test ExtensionClass support in Persistence.Persistent
 
-$Id$
-"""
-
-from zope.testing.doctest import DocTestSuite
+from doctest import DocTestSuite
 import pickle
 
 from Persistence import Persistent
 
-try:
-    # The _Persistence module is only compiled in a Zope checkout,
-    # where ExtensionClass is available.
-    import Persistence._Persistence
-except ImportError:
-    pass
-else:
+def test_basic():
+    """
 
-    def test_basic():
-        """
+    >>> from ExtensionClass import Base
 
-        >>> from ExtensionClass import Base
+    - Support for a class initialiser:
 
-        - Support for a class initialiser:
+      >>> class C(Persistent):
+      ...   def __class_init__(self):
+      ...      print 'class init called'
+      ...      print self.__name__
+      ...   def bar(self):
+      ...      return 'bar called'
+      class init called
+      C
+      >>> c = C()
+      >>> int(c.__class__ is C)
+      1
+      >>> int(c.__class__ is type(c))
+      1
 
-          >>> class C(Persistent):
-          ...   def __class_init__(self):
-          ...      print 'class init called'
-          ...      print self.__name__
-          ...   def bar(self):
-          ...      return 'bar called'
-          class init called
-          C
-          >>> c = C()
-          >>> int(c.__class__ is C)
-          1
-          >>> int(c.__class__ is type(c))
-          1
+    - Provide an inheritedAttribute method for looking up attributes in
+      base classes:
 
-        - Provide an inheritedAttribute method for looking up attributes in
-          base classes:
+      >>> class C2(C):
+      ...   def bar(*a):
+      ...      return C2.inheritedAttribute('bar')(*a), 42
+      class init called
+      C2
+      >>> o = C2()
+      >>> o.bar()
+      ('bar called', 42)
 
-          >>> class C2(C):
-          ...   def bar(*a):
-          ...      return C2.inheritedAttribute('bar')(*a), 42
-          class init called
-          C2
-          >>> o = C2()
-          >>> o.bar()
-          ('bar called', 42)
+      This is for compatability with old code. New code should use super
+      instead.
 
-          This is for compatability with old code. New code should use super
-          instead.
+    The base class, Base, exists mainly to support the __of__ protocol.
+    The __of__ protocol is similar to __get__ except that __of__ is called
+    when an implementor is retrieved from an instance as well as from a
+    class:
 
-        The base class, Base, exists mainly to support the __of__ protocol.
-        The __of__ protocol is similar to __get__ except that __of__ is called
-        when an implementor is retrieved from an instance as well as from a
-        class:
+    >>> class O(Base):
+    ...   def __of__(*a):
+    ...      return a
 
-        >>> class O(Base):
-        ...   def __of__(*a):
-        ...      return a
+    >>> o1 = O()
+    >>> o2 = O()
+    >>> C.o1 = o1
+    >>> c.o2 = o2
+    >>> c.o1 == (o1, c)
+    1
+    >>> C.o1 == o1
+    1
+    >>> int(c.o2 == (o2, c))
+    1
 
-        >>> o1 = O()
-        >>> o2 = O()
-        >>> C.o1 = o1
-        >>> c.o2 = o2
-        >>> c.o1 == (o1, c)
-        1
-        >>> C.o1 == o1
-        1
-        >>> int(c.o2 == (o2, c))
-        1
+    We accomplish this by making a class that implements __of__ a
+    descriptor and treating all descriptor ExtensionClasses this way. That
+    is, if an extension class is a descriptor, it's __get__ method will be
+    called even when it is retrieved from an instance.
 
-        We accomplish this by making a class that implements __of__ a
-        descriptor and treating all descriptor ExtensionClasses this way. That
-        is, if an extension class is a descriptor, it's __get__ method will be
-        called even when it is retrieved from an instance.
+    >>> class O(Base):
+    ...   def __get__(*a):
+    ...      return a
+    ...
+    >>> o1 = O()
+    >>> o2 = O()
+    >>> C.o1 = o1
+    >>> c.o2 = o2
+    >>> int(c.o1 == (o1, c, type(c)))
+    1
+    >>> int(C.o1 == (o1, None, type(c)))
+    1
+    >>> int(c.o2 == (o2, c, type(c)))
+    1
+    """
 
-        >>> class O(Base):
-        ...   def __get__(*a):
-        ...      return a
-        ...
-        >>> o1 = O()
-        >>> o2 = O()
-        >>> C.o1 = o1
-        >>> c.o2 = o2
-        >>> int(c.o1 == (o1, c, type(c)))
-        1
-        >>> int(C.o1 == (o1, None, type(c)))
-        1
-        >>> int(c.o2 == (o2, c, type(c)))
-        1
-        """
+def test_mixing():
+    """Test working with a classic class
 
-    def test_mixing():
-        """Test working with a classic class
+    >>> class Classic:
+    ...   def x(self):
+    ...     return 42
 
-        >>> class Classic:
-        ...   def x(self):
-        ...     return 42
+    >>> class O(Persistent):
+    ...   def __of__(*a):
+    ...      return a
 
-        >>> class O(Persistent):
-        ...   def __of__(*a):
-        ...      return a
+    >>> class O2(Classic, O):
+    ...   def __of__(*a):
+    ...      return (O2.inheritedAttribute('__of__')(*a),
+    ...              O2.inheritedAttribute('x')(a[0]))
 
-        >>> class O2(Classic, O):
-        ...   def __of__(*a):
-        ...      return (O2.inheritedAttribute('__of__')(*a),
-        ...              O2.inheritedAttribute('x')(a[0]))
+    >>> class C(Persistent):
+    ...   def __class_init__(self):
+    ...      print 'class init called'
+    ...      print self.__name__
+    ...   def bar(self):
+    ...      return 'bar called'
+    class init called
+    C
 
-        >>> class C(Persistent):
-        ...   def __class_init__(self):
-        ...      print 'class init called'
-        ...      print self.__name__
-        ...   def bar(self):
-        ...      return 'bar called'
-        class init called
-        C
+    >>> c = C()
+    >>> o2 = O2()
+    >>> c.o2 = o2
+    >>> int(c.o2 == ((o2, c), 42))
+    1
 
-        >>> c = C()
-        >>> o2 = O2()
-        >>> c.o2 = o2
-        >>> int(c.o2 == ((o2, c), 42))
-        1
+    Test working with a new style
 
-        Test working with a new style
+    >>> class Modern(object):
+    ...   def x(self):
+    ...     return 42
 
-        >>> class Modern(object):
-        ...   def x(self):
-        ...     return 42
+    >>> class O2(Modern, O):
+    ...   def __of__(*a):
+    ...      return (O2.inheritedAttribute('__of__')(*a),
+    ...              O2.inheritedAttribute('x')(a[0]))
 
-        >>> class O2(Modern, O):
-        ...   def __of__(*a):
-        ...      return (O2.inheritedAttribute('__of__')(*a),
-        ...              O2.inheritedAttribute('x')(a[0]))
+    >>> o2 = O2()
+    >>> c.o2 = o2
+    >>> int(c.o2 == ((o2, c), 42))
+    1
 
-        >>> o2 = O2()
-        >>> c.o2 = o2
-        >>> int(c.o2 == ((o2, c), 42))
-        1
+    """
 
-        """
+def proper_error_on_deleattr():
+    """
+    Florent Guillaume wrote:
 
-    def proper_error_on_deleattr():
-        """
-        Florent Guillaume wrote:
+    ...
 
-        ...
-
-        Excellent.
-        Will it also fix this particularity of ExtensionClass:
+    Excellent.
+    Will it also fix this particularity of ExtensionClass:
 
 
-        >>> class A(Persistent):
-        ...   def foo(self):
-        ...     self.gee
-        ...   def bar(self):
-        ...     del self.gee
+    >>> class A(Persistent):
+    ...   def foo(self):
+    ...     self.gee
+    ...   def bar(self):
+    ...     del self.gee
 
-        >>> a=A()
-        >>> a.foo()
-        Traceback (most recent call last):
-        ...
-        AttributeError: gee
+    >>> a=A()
+    >>> a.foo()
+    Traceback (most recent call last):
+    ...
+    AttributeError: gee
 
-        >>> a.bar()
-        Traceback (most recent call last):
-        ...
-        AttributeError: 'A' object has no attribute 'gee'
+    >>> a.bar()
+    Traceback (most recent call last):
+    ...
+    AttributeError: 'A' object has no attribute 'gee'
 
-        I.e., the fact that KeyError is raised whereas a normal class would
-        raise AttributeError.
-        """
+    I.e., the fact that KeyError is raised whereas a normal class would
+    raise AttributeError.
+    """
 
-    def test__basicnew__():
-        """
-        >>> x = Simple.__basicnew__()
-        >>> x.__dict__
-        {}
-        """
+def test__basicnew__():
+    """
+    >>> x = Simple.__basicnew__()
+    >>> x.__dict__
+    {}
+    """
 
-    def test_setattr_on_extension_type():
-        """
-        >>> for name in 'x', '_x', 'x_', '__x_y__', '___x__', '__x___', '_x_':
-        ...     setattr(Persistent, name, 1)
-        ...     print getattr(Persistent, name)
-        ...     delattr(Persistent, name)
-        ...     print getattr(Persistent, name, 0)
-        1
-        0
-        1
-        0
-        1
-        0
-        1
-        0
-        1
-        0
-        1
-        0
-        1
-        0
+def test_setattr_on_extension_type():
+    """
+    >>> for name in 'x', '_x', 'x_', '__x_y__', '___x__', '__x___', '_x_':
+    ...     setattr(Persistent, name, 1)
+    ...     print getattr(Persistent, name)
+    ...     delattr(Persistent, name)
+    ...     print getattr(Persistent, name, 0)
+    1
+    0
+    1
+    0
+    1
+    0
+    1
+    0
+    1
+    0
+    1
+    0
+    1
+    0
 
-        >>> Persistent.__foo__ = 1
-        Traceback (most recent call last):
-        ...
-        TypeError: can't set attributes of built-in/extension type """ \
-            """'Persistence.Persistent' if the attribute name begins """ \
-            """and ends with __ and contains only 4 _ characters
+    >>> Persistent.__foo__ = 1
+    Traceback (most recent call last):
+    ...
+    TypeError: can't set attributes of built-in/extension type """ \
+        """'Persistence.Persistent' if the attribute name begins """ \
+        """and ends with __ and contains only 4 _ characters
 
-        >>> Persistent.__foo__
-        Traceback (most recent call last):
-        ...
-        AttributeError: type object 'Persistence.Persistent' """ \
-            """has no attribute '__foo__'
+    >>> Persistent.__foo__
+    Traceback (most recent call last):
+    ...
+    AttributeError: type object 'Persistence.Persistent' """ \
+        """has no attribute '__foo__'
 
-        >>> del Persistent.__foo__
-        Traceback (most recent call last):
-        ...
-        TypeError: can't set attributes of built-in/extension type """ \
-            """'Persistence.Persistent' if the attribute name begins """ \
-            """and ends with __ and contains only 4 _ characters
+    >>> del Persistent.__foo__
+    Traceback (most recent call last):
+    ...
+    TypeError: can't set attributes of built-in/extension type """ \
+        """'Persistence.Persistent' if the attribute name begins """ \
+        """and ends with __ and contains only 4 _ characters
 
-        """
+    """
 
 def test_class_creation_under_stress():
     """
