@@ -20,7 +20,7 @@ README = open('README.txt').read()
 CHANGES = open('CHANGES.txt').read()
 
 setup(name='Persistence',
-      version = '2.13.2dev',
+      version = '2.13.2',
       url='http://pypi.python.org/pypi/Persistence',
       license='ZPL 2.1',
       description='Persistent ExtensionClass',
