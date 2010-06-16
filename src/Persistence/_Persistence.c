@@ -160,7 +160,8 @@ init_Persistence(void)
   if (Ptype.tp_bases == NULL)
     return;
   Ptype.tp_base = cPersistenceCAPI->pertype;
-  
+  Ptype.tp_basicsize = cPersistenceCAPI->pertype->tp_basicsize;
+
   Ptype.ob_type = ECExtensionClassType;
   if (PyType_Ready(&Ptype) < 0)
     return;
