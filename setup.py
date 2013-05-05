@@ -20,7 +20,7 @@ else:
                   [os.path.join('src', 'Persistence',
                   '_Persistence.c')],
                   include_dirs=['include', 'src']),
-]
+    ]
 
 setup(
     name='Persistence',
