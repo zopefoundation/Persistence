@@ -12,6 +12,7 @@
 #
 ##############################################################################
 
+from struct import pack
 import pickle
 import time
 import unittest
@@ -19,7 +20,12 @@ import unittest
 from Persistence import Persistent
 from persistent.cPickleCache import PickleCache
 from persistent.TimeStamp import TimeStamp
-from ZODB.utils import p64
+
+
+def p64(v):
+    """Pack an integer or long into a 8-byte string"""
+    return pack(">Q", v)
+
 
 class Jar(object):
     """Testing stub for _p_jar attribute."""
@@ -172,7 +178,7 @@ class PersistenceTest(unittest.TestCase):
 
         t = int(time.time())
         ts = TimeStamp(*time.gmtime(t)[:6])
-        obj._p_serial = repr(ts)
+        obj._p_serial = ts.raw()
         self.assertEqual(obj._p_mtime, t)
         self.assert_(isinstance(obj._p_mtime, float))
 
