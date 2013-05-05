@@ -1,14 +1,25 @@
 import os
+import platform
+import sys
+
 from setuptools import setup, find_packages, Extension
 
 README = open('README.rst').read()
 CHANGES = open('CHANGES.rst').read()
 
-ext_modules = [
-    Extension("Persistence._Persistence",
-              [os.path.join('src', 'Persistence',
-              '_Persistence.c')],
-              include_dirs=['include', 'src']),
+# PyPy won't build the extension
+py_impl = getattr(platform, 'python_implementation', lambda: None)
+is_pypy = py_impl() == 'PyPy'
+is_pure = 'PURE_PYTHON' in os.environ
+py3k = sys.version_info >= (3, )
+if is_pypy or is_pure or py3k:
+    ext_modules = []
+else:
+    ext_modules = [
+        Extension("Persistence._Persistence",
+                  [os.path.join('src', 'Persistence',
+                  '_Persistence.c')],
+                  include_dirs=['include', 'src']),
 ]
 
 setup(

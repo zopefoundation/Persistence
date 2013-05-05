@@ -12,26 +12,21 @@
 #
 ##############################################################################
 
-"""Python implementation of persistent base types
-
-$Id$"""
-
-import Persistence
-import persistent
+from Persistence import Persistent
 from persistent.mapping import PersistentMapping
 
-if Persistence.Persistent is not persistent.Persistent:
-    class PersistentMapping(Persistence.Persistent, PersistentMapping):
-        """Legacy persistent mapping class
 
-        This class mixes in ExtensionClass Base if it is present.
+class PersistentMapping(Persistent, PersistentMapping):
+    """Legacy persistent mapping class
 
-        Unless you actually want ExtensionClass semantics, use
-        persistent.mapping.PersistentMapping instead.
-        """
+    This class mixes in ExtensionClass Base if it is present.
 
-        def __setstate__(self, state):
-            if 'data' not in state:
-                state['data'] = state['_container']
-                del state['_container']
-            self.__dict__.update(state)
+    Unless you actually want ExtensionClass semantics, use
+    persistent.mapping.PersistentMapping instead.
+    """
+
+    def __setstate__(self, state):
+        if 'data' not in state:
+            state['data'] = state['_container']
+            del state['_container']
+        self.__dict__.update(state)
