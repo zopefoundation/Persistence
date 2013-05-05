@@ -17,6 +17,7 @@ import pickle
 
 from Persistence import Persistent
 
+
 def test_basic():
     """
 
@@ -94,6 +95,7 @@ def test_basic():
     1
     """
 
+
 def test_mixing():
     """Test working with a classic class
 
@@ -140,8 +142,8 @@ def test_mixing():
     >>> c.o2 = o2
     >>> int(c.o2 == ((o2, c), 42))
     1
-
     """
+
 
 def proper_error_on_deleattr():
     """
@@ -174,12 +176,14 @@ def proper_error_on_deleattr():
     raise AttributeError.
     """
 
+
 def test__basicnew__():
     """
     >>> x = Simple.__basicnew__()
     >>> x.__dict__
     {}
     """
+
 
 def test_setattr_on_extension_type():
     """
@@ -225,6 +229,7 @@ def test_setattr_on_extension_type():
 
     """
 
+
 def test_class_creation_under_stress():
     """
     >>> for i in range(100):
@@ -243,12 +248,14 @@ def test_class_creation_under_stress():
 
     """
 
+
 def print_dict(d):
     d = d.items()
     d.sort()
     print '{%s}' % (', '.join(
         [('%r: %r' % (k, v)) for (k, v) in d]
-        ))
+    ))
+
 
 def cmpattrs(self, other, *attrs):
     for attr in attrs:
@@ -259,6 +266,7 @@ def cmpattrs(self, other, *attrs):
             return c
     return 0
 
+
 class Simple(Persistent):
     def __init__(self, name, **kw):
         self.__name__ = name
@@ -268,6 +276,7 @@ class Simple(Persistent):
 
     def __cmp__(self, other):
         return cmpattrs(self, other, '__class__', *(self.__dict__.keys()))
+
 
 def test_basic_pickling():
     """
@@ -301,6 +310,7 @@ def test_basic_pickling():
     {'z': 1}
 
     """
+
 
 class Custom(Simple):
 
@@ -348,19 +358,22 @@ def test_pickling_w_overrides():
 
     """
 
+
 class Slotted(Persistent):
     __slots__ = 's1', 's2', '_p_splat', '_v_eek'
+
     def __init__(self, s1, s2):
         self.s1, self.s2 = s1, s2
         self._v_eek = 1
         self._p_splat = 2
 
+
 class SubSlotted(Slotted):
     __slots__ = 's3', 's4'
+
     def __init__(self, s1, s2, s3):
         Slotted.__init__(self, s1, s2)
         self.s3 = s3
-
 
     def __cmp__(self, other):
         return cmpattrs(self, other, '__class__', 's1', 's2', 's3', 's4')
@@ -402,6 +415,7 @@ def test_pickling_w_slots_only():
 
     """
 
+
 class SubSubSlotted(SubSlotted):
 
     def __init__(self, s1, s2, s3, **kw):
@@ -414,6 +428,7 @@ class SubSubSlotted(SubSlotted):
         return cmpattrs(self, other,
                         '__class__', 's1', 's2', 's3', 's4',
                         *(self.__dict__.keys()))
+
 
 def test_pickling_w_slots():
     """
@@ -453,6 +468,7 @@ def test_pickling_w_slots():
 
     """
 
+
 def test_pickling_w_slots_w_empty_dict():
     """
     >>> x = SubSubSlotted('x', 'y', 'z')
@@ -488,8 +504,8 @@ def test_pickling_w_slots_w_empty_dict():
     1
     >>> pickle.loads(pickle.dumps(x, 2)) == x
     1
-
     """
+
 
 def test_suite():
     return DocTestSuite()
