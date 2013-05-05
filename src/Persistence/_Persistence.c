@@ -11,10 +11,8 @@
  FOR A PARTICULAR PURPOSE.
 
 */
-static char _Persistence_module_documentation[] = 
+static char _Persistence_module_documentation[] =
 "Persistent ExtensionClass\n"
-"\n"
-"$Id$\n"
 ;
 
 #include "ExtensionClass/ExtensionClass.h"
@@ -103,7 +101,7 @@ P_getattr(cPersistentObject *self, PyObject *name)
 
   s = PyString_AS_STRING(name);
 
-  if (*s != '_' || unghost_getattr(s)) 
+  if (*s != '_' || unghost_getattr(s))
     {
       if (PER_USE(self))
         {
@@ -148,7 +146,7 @@ PyMODINIT_FUNC
 init_Persistence(void)
 {
   PyObject *m;
-        
+
   if (! ExtensionClassImported)
     return;
 
@@ -165,14 +163,14 @@ init_Persistence(void)
   Ptype.ob_type = ECExtensionClassType;
   if (PyType_Ready(&Ptype) < 0)
     return;
-        
+
   /* Create the module and add the functions */
   m = Py_InitModule3("_Persistence", _Persistence_methods,
                      _Persistence_module_documentation);
-  
+
   if (m == NULL)
     return;
-  
+
   /* Add types: */
   if (PyModule_AddObject(m, "Persistent", (PyObject *)&Ptype) < 0)
     return;
