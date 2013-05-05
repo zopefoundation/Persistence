@@ -13,7 +13,7 @@ ext_modules = [
 
 setup(
     name='Persistence',
-    version='2.13.3dev',
+    version='3.0dev',
     url='http://pypi.python.org/pypi/Persistence',
     license='ZPL 2.1',
     description='Persistent ExtensionClass',
