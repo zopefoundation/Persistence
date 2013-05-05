@@ -13,9 +13,15 @@
 ##############################################################################
 
 from doctest import DocTestSuite
-import pickle
 
 from Persistence import Persistent
+
+
+def print_dict(d):
+    d = d.items()
+    print('{%s}' % (', '.join(
+        [('%r: %r' % (k, v)) for (k, v) in sorted(d)]
+    )))
 
 
 def test_basic():
@@ -27,8 +33,8 @@ def test_basic():
 
       >>> class C(Persistent):
       ...   def __class_init__(self):
-      ...      print 'class init called'
-      ...      print self.__name__
+      ...      print('class init called')
+      ...      print(self.__name__)
       ...   def bar(self):
       ...      return 'bar called'
       class init called
@@ -114,8 +120,8 @@ def test_mixing():
 
     >>> class C(Persistent):
     ...   def __class_init__(self):
-    ...      print 'class init called'
-    ...      print self.__name__
+    ...      print('class init called')
+    ...      print(self.__name__)
     ...   def bar(self):
     ...      return 'bar called'
     class init called
@@ -145,6 +151,20 @@ def test_mixing():
     """
 
 
+def test_class_creation_under_stress():
+    """
+    >>> numbers = []
+    >>> for i in range(100):
+    ...     class B(Persistent):
+    ...         numbers.append(i)
+    >>> numbers == list(range(100))
+    True
+
+    >>> import gc
+    >>> x = gc.collect()
+    """
+
+
 def proper_error_on_deleattr():
     """
     Florent Guillaume wrote:
@@ -162,12 +182,12 @@ def proper_error_on_deleattr():
     ...     del self.gee
 
     >>> a=A()
-    >>> a.foo()
+    >>> a.foo()  # doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
     ...
-    AttributeError: gee
+    AttributeError: 'A' object has no attribute 'gee'
 
-    >>> a.bar()
+    >>> a.bar()  # doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
     ...
     AttributeError: 'A' object has no attribute 'gee'
@@ -183,78 +203,6 @@ def test__basicnew__():
     >>> x.__dict__
     {}
     """
-
-
-def test_setattr_on_extension_type():
-    """
-    >>> for name in 'x', '_x', 'x_', '__x_y__', '___x__', '__x___', '_x_':
-    ...     setattr(Persistent, name, 1)
-    ...     print getattr(Persistent, name)
-    ...     delattr(Persistent, name)
-    ...     print getattr(Persistent, name, 0)
-    1
-    0
-    1
-    0
-    1
-    0
-    1
-    0
-    1
-    0
-    1
-    0
-    1
-    0
-
-    >>> Persistent.__foo__ = 1
-    Traceback (most recent call last):
-    ...
-    TypeError: can't set attributes of built-in/extension type """ \
-        """'Persistence.Persistent' if the attribute name begins """ \
-        """and ends with __ and contains only 4 _ characters
-
-    >>> Persistent.__foo__
-    Traceback (most recent call last):
-    ...
-    AttributeError: type object 'Persistence.Persistent' """ \
-        """has no attribute '__foo__'
-
-    >>> del Persistent.__foo__
-    Traceback (most recent call last):
-    ...
-    TypeError: can't set attributes of built-in/extension type """ \
-        """'Persistence.Persistent' if the attribute name begins """ \
-        """and ends with __ and contains only 4 _ characters
-
-    """
-
-
-def test_class_creation_under_stress():
-    """
-    >>> for i in range(100):
-    ...   class B(Persistent):
-    ...     print i,
-    ...     if i and i%20 == 0:
-    ...         print
-    0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
-    21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40
-    41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60
-    61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80
-    81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99
-
-    >>> import gc
-    >>> x = gc.collect()
-
-    """
-
-
-def print_dict(d):
-    d = d.items()
-    d.sort()
-    print '{%s}' % (', '.join(
-        [('%r: %r' % (k, v)) for (k, v) in d]
-    ))
 
 
 def cmpattrs(self, other, *attrs):
@@ -288,14 +236,15 @@ def test_basic_pickling():
     >>> f, (c,), state = x.__reduce__()
     >>> f.__name__
     '__newobj__'
-    >>> f.__module__
-    'copy_reg'
+    >>> f.__module__ in ('copyreg', 'copy_reg')
+    True
     >>> c.__name__
     'Simple'
 
     >>> print_dict(state)
     {'__name__': 'x', 'aaa': 1, 'bbb': 'foo'}
 
+    >>> import pickle
     >>> pickle.loads(pickle.dumps(x)) == x
     1
     >>> pickle.loads(pickle.dumps(x, 0)) == x
@@ -308,7 +257,6 @@ def test_basic_pickling():
     >>> x.__setstate__({'z': 1})
     >>> x.__dict__
     {'z': 1}
-
     """
 
 
@@ -340,13 +288,14 @@ def test_pickling_w_overrides():
     >>> (f, (c, ax, ay), a) = x.__reduce__()
     >>> f.__name__
     '__newobj__'
-    >>> f.__module__
-    'copy_reg'
+    >>> f.__module__ in ('copy_reg', 'copyreg')
+    True
     >>> c.__name__
     'Custom'
     >>> ax, ay, a
     ('x', 'y', 99)
 
+    >>> import pickle
     >>> pickle.loads(pickle.dumps(x)) == x
     1
     >>> pickle.loads(pickle.dumps(x, 0)) == x
@@ -355,7 +304,6 @@ def test_pickling_w_overrides():
     1
     >>> pickle.loads(pickle.dumps(x, 2)) == x
     1
-
     """
 
 
@@ -388,6 +336,7 @@ def test_pickling_w_slots_only():
     >>> print_dict(s)
     {'s1': 'x', 's2': 'y', 's3': 'z'}
 
+    >>> import pickle
     >>> pickle.loads(pickle.dumps(x)) == x
     1
     >>> pickle.loads(pickle.dumps(x, 0)) == x
@@ -412,7 +361,6 @@ def test_pickling_w_slots_only():
     1
     >>> pickle.loads(pickle.dumps(x, 2)) == x
     1
-
     """
 
 
@@ -440,6 +388,7 @@ def test_pickling_w_slots():
     >>> print_dict(s)
     {'s1': 'x', 's2': 'y', 's3': 'z'}
 
+    >>> import pickle
     >>> pickle.loads(pickle.dumps(x)) == x
     1
     >>> pickle.loads(pickle.dumps(x, 0)) == x
@@ -465,7 +414,6 @@ def test_pickling_w_slots():
     1
     >>> pickle.loads(pickle.dumps(x, 2)) == x
     1
-
     """
 
 
@@ -479,6 +427,7 @@ def test_pickling_w_slots_w_empty_dict():
     >>> print_dict(s)
     {'s1': 'x', 's2': 'y', 's3': 'z'}
 
+    >>> import pickle
     >>> pickle.loads(pickle.dumps(x)) == x
     1
     >>> pickle.loads(pickle.dumps(x, 0)) == x
@@ -504,6 +453,50 @@ def test_pickling_w_slots_w_empty_dict():
     1
     >>> pickle.loads(pickle.dumps(x, 2)) == x
     1
+    """
+
+
+def test_setattr_on_extension_type():
+    """
+    >>> for name in 'x', '_x', 'x_', '__x_y__', '___x__', '__x___', '_x_':
+    ...     setattr(Persistent, name, 1)
+    ...     print(getattr(Persistent, name))
+    ...     delattr(Persistent, name)
+    ...     print(getattr(Persistent, name, 0))
+    1
+    0
+    1
+    0
+    1
+    0
+    1
+    0
+    1
+    0
+    1
+    0
+    1
+    0
+
+    >>> Persistent.__foo__ = 1  # doctest: +IGNORE_EXCEPTION_DETAIL
+    Traceback (most recent call last):
+    ...
+    TypeError: can't set attributes of built-in/extension type """ \
+        """'Persistence.Persistent' if the attribute name begins """ \
+        """and ends with __ and contains only 4 _ characters
+
+    >>> Persistent.__foo__  # doctest: +IGNORE_EXCEPTION_DETAIL
+    Traceback (most recent call last):
+    ...
+    AttributeError: type object 'Persistence.Persistent' """ \
+        """has no attribute '__foo__'
+
+    >>> del Persistent.__foo__
+    Traceback (most recent call last):
+    ...
+    TypeError: can't set attributes of built-in/extension type """ \
+        """'Persistence.Persistent' if the attribute name begins """ \
+        """and ends with __ and contains only 4 _ characters
     """
 
 
