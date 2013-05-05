@@ -60,8 +60,10 @@ class Jar(object):
         # but it suffices for the tests.
         obj.__class__.__init__(obj)
 
+
 class P(Persistent):
     pass
+
 
 class H1(Persistent):
 
@@ -71,6 +73,7 @@ class H1(Persistent):
     def __getattr__(self, attr):
         self.n += 1
         return self.n
+
 
 class H2(Persistent):
 
@@ -85,6 +88,7 @@ class H2(Persistent):
             n = supergetattr("n")
             self.n = n + 1
             return n + 1
+
 
 class PersistenceTest(unittest.TestCase):
 
@@ -107,6 +111,7 @@ class PersistenceTest(unittest.TestCase):
         def deloid():
             del obj._p_oid
         self.assertRaises(ValueError, deloid)
+
         def setoid():
             obj._p_oid = 12
         self.assertRaises(ValueError, setoid)
@@ -114,6 +119,7 @@ class PersistenceTest(unittest.TestCase):
         def deloid():
             del obj._p_jar
         self.assertRaises(ValueError, deloid)
+
         def setoid():
             obj._p_jar = 12
         self.assertRaises(ValueError, setoid)
@@ -225,7 +231,3 @@ class PersistenceTest(unittest.TestCase):
 
     # TODO:  Need to decide how __setattr__ and __delattr__ should work,
     # then write tests.
-
-
-def test_suite():
-    return unittest.makeSuite(PersistenceTest)

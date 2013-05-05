@@ -1,25 +1,10 @@
-##############################################################################
-#
-# Copyright (c) 2003 Zope Foundation and Contributors.
-# All Rights Reserved.
-#
-# This software is subject to the provisions of the Zope Public License,
-# Version 2.1 (ZPL).  A copy of the ZPL should accompany this distribution.
-# THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
-# WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-# WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
-# FOR A PARTICULAR PURPOSE.
-#
-##############################################################################
-"""
-$Id$
-"""
-import unittest
 from doctest import DocTestSuite
-from Persistence import PersistentMapping
+import unittest
+
 
 def test_basic_functionality():
     """
+    >>> from Persistence import PersistentMapping
     >>> m = PersistentMapping({'x': 1}, a=2, b=3)
     >>> m['name'] = 'bob'
     >>> m['fred']
@@ -68,21 +53,22 @@ def test_basic_functionality():
 
     >>> 'name' in m
     True
-
     """
+
 
 def test_old_pickles():
     """
+    >>> from Persistence import PersistentMapping
     >>> m = PersistentMapping()
     >>> m.__setstate__({'_container': {'x': 1, 'y': 2}})
     >>> items = m.items()
     >>> items.sort()
     >>> items
     [('x', 1), ('y', 2)]
-
     """
+
 
 def test_suite():
     return unittest.TestSuite((
         DocTestSuite(),
-        ))
+    ))
