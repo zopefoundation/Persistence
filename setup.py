@@ -16,8 +16,8 @@
 import os
 from setuptools import setup, find_packages, Extension
 
-README = open('README.txt').read()
-CHANGES = open('CHANGES.txt').read()
+README = open('README.rst').read()
+CHANGES = open('CHANGES.rst').read()
 
 setup(name='Persistence',
       version = '2.13.3dev',
