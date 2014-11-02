@@ -4,6 +4,9 @@ Changelog
 3.0 (unreleased)
 ----------------
 
+- Add a Python stub implementation of the Persistent class.
+
+- Tests: Use `__eq__` instead of `__cmp__`.
 
 2.13.2 (2010-06-16)
 -------------------

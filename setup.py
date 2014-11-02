@@ -17,8 +17,7 @@ if is_pypy or is_pure or py3k:
 else:
     ext_modules = [
         Extension("Persistence._Persistence",
-                  [os.path.join('src', 'Persistence',
-                  '_Persistence.c')],
+                  [os.path.join('src', 'Persistence', '_Persistence.c')],
                   include_dirs=['include', 'src']),
     ]
 
