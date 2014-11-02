@@ -8,11 +8,11 @@ class Persistent(Base, persistent.Persistent):
     pass
 
 
-if not 'PURE_PYTHON' in os.environ:  # pragma no cover
+if 'PURE_PYTHON' not in os.environ:  # pragma no cover
     try:
-        from _Persistence import Persistent
+        from _Persistence import Persistent  # NOQA
     except ImportError:
         pass
 
 Overridable = Persistent
-from Persistence.mapping import PersistentMapping
+from Persistence.mapping import PersistentMapping  # NOQA
