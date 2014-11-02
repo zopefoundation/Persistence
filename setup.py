@@ -23,7 +23,7 @@ else:
 
 setup(
     name='Persistence',
-    version='3.0dev',
+    version='3.0a1',
     url='http://pypi.python.org/pypi/Persistence',
     license='ZPL 2.1',
     description='Persistent ExtensionClass',

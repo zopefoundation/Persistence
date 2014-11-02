@@ -1,8 +1,8 @@
 Changelog
 =========
 
-3.0 (unreleased)
-----------------
+3.0a1 (2014-11-02)
+------------------
 
 - Add a Python stub implementation of the Persistent class.
 
