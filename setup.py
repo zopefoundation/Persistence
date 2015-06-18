@@ -36,7 +36,9 @@ setup(name='Persistence',
                                            '_Persistence.c')],
                              include_dirs=['include', 'src']),
                    ],
-      install_requires=['ExtensionClass', 'ZODB3'],
+      install_requires=[
+        'ExtensionClass<4.0dev',
+        'ZODB3<3.11dev'],
       include_package_data=True,
       zip_safe=False,
       )
