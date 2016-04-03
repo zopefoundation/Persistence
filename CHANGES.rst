@@ -4,6 +4,9 @@ Changelog
 3.0 (unreleased)
 ----------------
 
+- Update ExtensionClass and persistent headers and minimum versions.
+
+- Drop support for Python 2.6.
 
 3.0a1 (2014-11-02)
 ------------------

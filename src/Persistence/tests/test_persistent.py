@@ -12,14 +12,17 @@
 #
 ##############################################################################
 
+import os
 from struct import pack
 import pickle
 import time
 import unittest
 
 from Persistence import Persistent
-from persistent.cPickleCache import PickleCache
+from persistent.picklecache import PickleCache
 from persistent.TimeStamp import TimeStamp
+
+is_pure = 'PURE_PYTHON' in os.environ
 
 
 def p64(v):
@@ -98,7 +101,7 @@ class PersistenceTest(unittest.TestCase):
     def tearDown(self):
         self.jar.close()
 
-    def testOidAndJarAttrs(self):
+    def test_oid_jar_attrs(self):
         obj = P()
         self.assertEqual(obj._p_oid, None)
         obj._p_oid = 12
@@ -107,22 +110,29 @@ class PersistenceTest(unittest.TestCase):
 
         self.jar.add(obj)
 
-        # Can't change oid of cache object.
-        def deloid():
+        if not is_pure:
+            # Can change oid of cache object since persistent 4.0.8
             del obj._p_oid
-        self.assertRaises(ValueError, deloid)
-
-        def setoid():
             obj._p_oid = 12
-        self.assertRaises(ValueError, setoid)
-
-        def deloid():
             del obj._p_jar
-        self.assertRaises(ValueError, deloid)
-
-        def setoid():
             obj._p_jar = 12
-        self.assertRaises(ValueError, setoid)
+        else:
+            # Can't change oid of cache object.
+            def deloid():
+                del obj._p_oid
+            self.assertRaises(ValueError, deloid)
+
+            def setoid():
+                obj._p_oid = 12
+            self.assertRaises(ValueError, setoid)
+
+            def deloid():
+                del obj._p_jar
+            self.assertRaises(ValueError, deloid)
+
+            def setoid():
+                obj._p_jar = 12
+            self.assertRaises(ValueError, setoid)
 
     def testChanged(self):
         obj = P()

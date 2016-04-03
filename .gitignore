@@ -8,4 +8,11 @@ parts
 *.pyc
 *.pyo
 *.so
-*.egg-info
+.installed.cfg
+develop-eggs/
+eggs/
+*.egg-info/
+.coverage
+coverage.xml
+.tox
+nosetests.xml

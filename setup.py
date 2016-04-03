@@ -21,9 +21,11 @@ else:
                   include_dirs=['include', 'src']),
     ]
 
+__version__ = '3.0.dev0'
+
 setup(
     name='Persistence',
-    version='3.0',
+    version=__version__,
     url='http://pypi.python.org/pypi/Persistence',
     license='ZPL 2.1',
     description='Persistent ExtensionClass',
@@ -40,18 +42,18 @@ setup(
         "Operating System :: OS Independent",
         "Programming Language :: Python",
         "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 2.6",
         "Programming Language :: Python :: 2.7",
         # "Programming Language :: Python :: 3",
-        # "Programming Language :: Python :: 3.2",
         # "Programming Language :: Python :: 3.3",
+        # "Programming Language :: Python :: 3.4",
+        # "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: Implementation :: CPython",
         # "Programming Language :: Python :: Implementation :: PyPy",
     ],
     ext_modules=ext_modules,
     install_requires=[
-        'ExtensionClass >= 4.1a1',
-        'persistent',
+        'ExtensionClass >= 4.1.2',
+        'persistent >= 4.1.1',
     ],
     include_package_data=True,
     zip_safe=False,
