@@ -22,7 +22,7 @@ from Persistence import Persistent
 from persistent.picklecache import PickleCache
 from persistent.TimeStamp import TimeStamp
 
-is_pure = 'PURE_PYTHON' in os.environ
+IS_PURE = 'PURE_PYTHON' in os.environ
 
 
 def p64(v):
@@ -110,7 +110,7 @@ class PersistenceTest(unittest.TestCase):
 
         self.jar.add(obj)
 
-        if not is_pure:
+        if not IS_PURE:
             # Can change oid of cache object since persistent 4.0.8
             del obj._p_oid
             obj._p_oid = 12
