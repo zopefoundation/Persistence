@@ -1,74 +1,21 @@
-from doctest import DocTestSuite
 import unittest
 
 
-def test_basic_functionality():
-    """
-    >>> from Persistence import PersistentMapping
-    >>> m = PersistentMapping({'x': 1}, a=2, b=3)
-    >>> m['name'] = 'bob'
-    >>> m['fred']
-    Traceback (most recent call last):
-    ...
-    KeyError: 'fred'
-    >>> m.get('fred')
-    >>> m.get('fred', 42)
-    42
-    >>> m.get('name', 42)
-    'bob'
-    >>> m.get('name')
-    'bob'
-    >>> m['name']
-    'bob'
+class PersistentMappingTests(unittest.TestCase):
 
-    >>> keys = m.keys()
-    >>> keys.sort()
-    >>> keys
-    ['a', 'b', 'name', 'x']
+    def _getTargetClass(self):
+        from Persistence import PersistentMapping
+        return PersistentMapping
 
-    >>> values = m.values()
-    >>> values.sort()
-    >>> values
-    [1, 2, 3, 'bob']
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
 
-    >>> items = m.items()
-    >>> items.sort()
-    >>> items
-    [('a', 2), ('b', 3), ('name', 'bob'), ('x', 1)]
+    def test___setstate__(self):
+        m = self._makeOne()
+        m.__setstate__({'data': {'x': 1, 'y': 2}})
+        self.assertEqual(sorted(m.items()), [('x', 1), ('y', 2)])
 
-    >>> keys = list(m.iterkeys())
-    >>> keys.sort()
-    >>> keys
-    ['a', 'b', 'name', 'x']
-
-    >>> values = list(m.itervalues())
-    >>> values.sort()
-    >>> values
-    [1, 2, 3, 'bob']
-
-    >>> items = list(m.iteritems())
-    >>> items.sort()
-    >>> items
-    [('a', 2), ('b', 3), ('name', 'bob'), ('x', 1)]
-
-    >>> 'name' in m
-    True
-    """
-
-
-def test_old_pickles():
-    """
-    >>> from Persistence import PersistentMapping
-    >>> m = PersistentMapping()
-    >>> m.__setstate__({'_container': {'x': 1, 'y': 2}})
-    >>> items = m.items()
-    >>> items.sort()
-    >>> items
-    [('x', 1), ('y', 2)]
-    """
-
-
-def test_suite():
-    return unittest.TestSuite((
-        DocTestSuite(),
-    ))
+    def test___setstate___old_pickles(self):
+        m = self._makeOne()
+        m.__setstate__({'_container': {'x': 1, 'y': 2}})
+        self.assertEqual(sorted(m.items()), [('x', 1), ('y', 2)])

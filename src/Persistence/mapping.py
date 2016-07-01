@@ -13,10 +13,10 @@
 ##############################################################################
 
 from Persistence import Persistent
-from persistent.mapping import PersistentMapping
+from persistent.mapping import PersistentMapping as _BasePersistentMapping
 
 
-class PersistentMapping(Persistent, PersistentMapping):
+class PersistentMapping(Persistent, _BasePersistentMapping):
     """Legacy persistent mapping class
 
     This class mixes in ExtensionClass Base if it is present.
