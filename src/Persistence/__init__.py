@@ -18,6 +18,13 @@ import persistent
 
 
 class Persistent(Base, persistent.Persistent):
+    """Legacy persistent class
+
+    This class mixes in :class:`ExtensionClass.Base` if it is present.
+
+    Unless you actually want ExtensionClass semantics, use
+    :class:`persistent.mapping.Persistent` instead.
+    """
     pass
 
 
@@ -28,4 +35,6 @@ if 'PURE_PYTHON' not in os.environ:  # pragma no cover
         pass
 
 Overridable = Persistent
+
+# API Import after setting up the base class
 from Persistence.mapping import PersistentMapping  # NOQA

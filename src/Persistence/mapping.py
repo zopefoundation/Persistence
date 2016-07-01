@@ -19,12 +19,11 @@ from persistent.mapping import PersistentMapping as _BasePersistentMapping
 class PersistentMapping(Persistent, _BasePersistentMapping):
     """Legacy persistent mapping class
 
-    This class mixes in ExtensionClass Base if it is present.
+    This class mixes in :class:`ExtensionClass.Base` if it is present.
 
     Unless you actually want ExtensionClass semantics, use
-    persistent.mapping.PersistentMapping instead.
+    :class:`persistent.mapping.PersistentMapping` instead.
     """
-
     def __setstate__(self, state):
         if 'data' not in state:
             state['data'] = state['_container']
