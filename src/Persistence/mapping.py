@@ -51,7 +51,7 @@ if six.PY2:
                 del state['_container']
             self.__dict__.update(state)
 
-else:
+else:  # pragma: no cover
 
     class PersistentMapping(six.with_metaclass(
             _Meta, Persistent, _BasePersistentMapping)):

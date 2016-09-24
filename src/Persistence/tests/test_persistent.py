@@ -13,8 +13,9 @@
 ##############################################################################
 
 import os
-from struct import pack
 import pickle
+import platform
+from struct import pack
 import time
 import unittest
 
@@ -22,6 +23,8 @@ from Persistence import Persistent
 from persistent.picklecache import PickleCache
 from persistent.TimeStamp import TimeStamp
 
+py_impl = getattr(platform, 'python_implementation', lambda: None)
+IS_PYPY = py_impl() == 'PyPy'
 IS_PURE = 'PURE_PYTHON' in os.environ
 
 
@@ -110,7 +113,7 @@ class PersistenceTest(unittest.TestCase):
 
         self.jar.add(obj)
 
-        if not IS_PURE:
+        if not (IS_PURE or IS_PYPY):
             # Can change oid of cache object since persistent 4.0.8
             del obj._p_oid
             obj._p_oid = 12
