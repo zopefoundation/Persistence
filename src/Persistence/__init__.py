@@ -17,7 +17,7 @@ from ExtensionClass import Base
 import persistent
 
 
-class Persistent(Base, persistent.Persistent):
+class Persistent(persistent.Persistent, Base):
     """Legacy persistent class
 
     This class mixes in :class:`ExtensionClass.Base` if it is present.

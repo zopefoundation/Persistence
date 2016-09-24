@@ -488,15 +488,13 @@ def test_setattr_on_extension_type():
     >>> Persistent.__foo__  # doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
     ...
-    AttributeError: type object 'Persistence.Persistent' """ \
-        """has no attribute '__foo__'
+    AttributeError: ...
 
-    >>> del Persistent.__foo__
-    Traceback (most recent call last):
-    ...
-    TypeError: can't set attributes of built-in/extension type """ \
-        """'Persistence.Persistent' if the attribute name begins """ \
-        """and ends with __ and contains only 4 _ characters
+    >>> try:
+    ...     del Persistent.__foo__
+    ... except (AttributeError, TypeError):  # different on pypy
+    ...     print('error')
+    error
     """
 
 
