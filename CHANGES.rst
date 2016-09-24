@@ -4,6 +4,8 @@ Changelog
 3.0 (unreleased)
 ----------------
 
+- #1: Resolve meta class conflict for PersistentMapping.
+
 - Update ExtensionClass and persistent headers and minimum versions.
 
 - Drop support for Python 2.6.

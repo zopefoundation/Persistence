@@ -173,7 +173,7 @@ class PersistenceTest(unittest.TestCase):
         self.assertEqual(obj._p_changed, None)
 
     def testSerial(self):
-        noserial = "\000" * 8
+        noserial = b'\000' * 8
         obj = P()
         self.assertEqual(obj._p_serial, noserial)
 
@@ -184,7 +184,7 @@ class PersistenceTest(unittest.TestCase):
         self.assertRaises(ValueError, set, "012345678")
         self.assertRaises(ValueError, set, u"01234567")
 
-        obj._p_serial = "01234567"
+        obj._p_serial = b"01234567"
         del obj._p_serial
         self.assertEqual(obj._p_serial, noserial)
 

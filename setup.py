@@ -54,6 +54,7 @@ setup(
     install_requires=[
         'ExtensionClass >= 4.1.2',
         'persistent >= 4.1.1',
+        'six',
     ],
     include_package_data=True,
     zip_safe=False,
