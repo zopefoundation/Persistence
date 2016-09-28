@@ -13,8 +13,17 @@
 ##############################################################################
 import os
 
-from ExtensionClass import Base
+from ExtensionClass import Base, Base_getattro
 import persistent
+from persistent.persistence import _SPECIAL_NAMES
+
+# persistent supports the C API on both Python 2 and 3, but it can
+# be disabled or depend on the Python implementation (e.g. PyPy).
+CAPI = True
+try:
+    import persistent.cPersistence
+except ImportError:
+    CAPI = False
 
 
 class Persistent(persistent.Persistent, Base):
@@ -25,7 +34,20 @@ class Persistent(persistent.Persistent, Base):
     Unless you actually want ExtensionClass semantics, use
     :class:`persistent.mapping.Persistent` instead.
     """
-    pass
+    __slots__ = ()
+
+    if not CAPI:
+
+        def __getattribute__(self, name):
+            """ See IPersistent.
+            """
+            oga = Base_getattro
+            if (not name.startswith('_p_') and
+                    name not in _SPECIAL_NAMES):
+                if oga(self, '_Persistent__flags') is None:
+                    oga(self, '_p_activate')()
+                oga(self, '_p_accessed')()
+            return oga(self, name)
 
 
 if 'PURE_PYTHON' not in os.environ:  # pragma no cover
