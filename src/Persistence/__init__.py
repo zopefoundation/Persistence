@@ -15,7 +15,12 @@ import os
 
 from ExtensionClass import Base, Base_getattro
 import persistent
-from persistent.persistence import _SPECIAL_NAMES
+
+PURE_PYTHON = os.environ.get('PURE_PYTHON')
+if PURE_PYTHON:
+    from persistent.persistence import _SPECIAL_NAMES
+else:
+    _SPECIAL_NAMES = set()
 
 # persistent supports the C API on both Python 2 and 3, but it can
 # be disabled or depend on the Python implementation (e.g. PyPy).
