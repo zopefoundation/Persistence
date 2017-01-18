@@ -52,7 +52,7 @@ setup(
     ],
     ext_modules=ext_modules,
     install_requires=[
-        'ExtensionClass >= 4.1.2',
+        'ExtensionClass >= 4.2.0',
         'persistent >= 4.1.1',
         'six',
     ],
