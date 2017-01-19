@@ -113,6 +113,8 @@ P_getattr(cPersistentObject *self, PyObject *name)
   else
     v = Py_FindAttr((PyObject*)self, name);
 
+  Py_DECREF(as_bytes);
+
   return v;
 }
 
