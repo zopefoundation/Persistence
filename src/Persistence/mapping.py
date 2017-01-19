@@ -53,7 +53,22 @@ if six.PY2:
 
 else:  # pragma: no cover
 
-    class PersistentMapping(six.with_metaclass(
+    def with_metaclass(meta, *bases):
+        # Adopted from six.with_metaclass.
+
+        # Create a base class with a metaclass.
+        # This requires a bit of explanation: the basic idea is to make a dummy
+        # metaclass for one level of class instantiation that replaces itself
+        # with the actual metaclass.
+
+        class metaclass(meta):  # NOQA
+
+            def __new__(cls, name, this_bases, d):
+                return meta(name, bases, d)
+        # Use ExtensionClass.__new__ instead of type.__new__
+        return ExtensionClass.__new__(metaclass, 'temporary_class', (), {})
+
+    class PersistentMapping(with_metaclass(
             _Meta, Persistent, _BasePersistentMapping)):
         """Legacy persistent mapping class
 
