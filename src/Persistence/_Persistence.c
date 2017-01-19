@@ -94,19 +94,14 @@ static PyObject *
 P_getattr(cPersistentObject *self, PyObject *name)
 {
   PyObject *v=NULL;
-  char *s;
 
-  name = convert_name(name);
-  if (!name)
+  PyObject* as_bytes = convert_name(name);
+  if (!as_bytes)
     return NULL;
 
-#ifdef PY3K
-  s = PyBytes_AS_STRING(name);
-#else
-  s = PyString_AS_STRING(name);
-#endif
+  char *s = PyBytes_AS_STRING(as_bytes);
 
-  if (*s != '_' || unghost_getattr(s))
+  if (s[0] != '_' || unghost_getattr(s))
     {
       if (PER_USE(self))
         {
@@ -117,8 +112,6 @@ P_getattr(cPersistentObject *self, PyObject *name)
     }
   else
     v = Py_FindAttr((PyObject*)self, name);
-
-  Py_DECREF(name);
 
   return v;
 }

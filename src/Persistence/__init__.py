@@ -52,7 +52,7 @@ class Persistent(persistent.Persistent, Base):
 
 if 'PURE_PYTHON' not in os.environ:  # pragma no cover
     try:
-        from _Persistence import Persistent  # NOQA
+        from Persistence._Persistence import Persistent  # NOQA
     except ImportError:
         pass
 
