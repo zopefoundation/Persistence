@@ -30,6 +30,9 @@ class _Meta(ExtensionClass, ABCMeta):
         # Ignore ABCMeta.
         return ExtensionClass.__new__(cls, *args, **kw)
 
+    __instancecheck__ = ExtensionClass.__instancecheck__
+    __subclasscheck__ = ExtensionClass.__subclasscheck__
+
 
 if six.PY2:
     # Neither six.with_metaclass nor six.add_metaclass work under
