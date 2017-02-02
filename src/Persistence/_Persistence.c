@@ -16,6 +16,7 @@ static char _Persistence_module_documentation[] =
 ;
 
 #include "ExtensionClass/ExtensionClass.h"
+#include "ExtensionClass/_compat.h"
 #include "persistent/cPersistence.h"
 
 
@@ -31,15 +32,15 @@ convert_name(PyObject *name)
        existing tp_setattro slots expect a string object as name
        and we wouldn't want to break those. */
     if (PyUnicode_Check(name)) {
-	name = PyUnicode_AsEncodedString(name, NULL, NULL);
+		name = PyUnicode_AsEncodedString(name, NULL, NULL);
     }
     else
 #endif
-    if (!PyString_Check(name)) {
-	PyErr_SetString(PyExc_TypeError, "attribute name must be a string");
+    if (!NATIVE_CHECK(name)) {
+		PyErr_SetString(PyExc_TypeError, "attribute name must be a string");
 	return NULL;
     } else
-	Py_INCREF(name);
+		Py_INCREF(name);
     return name;
 }
 
@@ -93,15 +94,14 @@ static PyObject *
 P_getattr(cPersistentObject *self, PyObject *name)
 {
   PyObject *v=NULL;
-  char *s;
 
-  name = convert_name(name);
-  if (!name)
+  PyObject* as_bytes = convert_name(name);
+  if (!as_bytes)
     return NULL;
 
-  s = PyString_AS_STRING(name);
+  char *s = PyBytes_AS_STRING(as_bytes);
 
-  if (*s != '_' || unghost_getattr(s))
+  if (s[0] != '_' || unghost_getattr(s))
     {
       if (PER_USE(self))
         {
@@ -113,66 +113,97 @@ P_getattr(cPersistentObject *self, PyObject *name)
   else
     v = Py_FindAttr((PyObject*)self, name);
 
-  Py_DECREF(name);
+  Py_DECREF(as_bytes);
 
   return v;
 }
 
 
 static PyTypeObject Ptype = {
-	PyObject_HEAD_INIT(NULL)
-	/* ob_size           */ 0,
-	/* tp_name           */ "Persistence.Persistent",
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        /* tp_getattro       */ (getattrofunc)P_getattr,
-        0, 0,
-        /* tp_flags          */ Py_TPFLAGS_DEFAULT
-				| Py_TPFLAGS_BASETYPE
-#ifdef Py_TPFLAGS_HAVE_VERSION_TAG
-				| Py_TPFLAGS_HAVE_VERSION_TAG
-#endif
-				,
-	/* tp_doc            */ "Persistent ExtensionClass",
+	PyVarObject_HEAD_INIT(NULL, 0)
+	"Persistence.Persistent",     /* tp_name */
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  (getattrofunc)P_getattr,      /* tp_getattro */
+  0,                            /* tp_setattro */
+  0,                            /* tp_as_buffer */
+  Py_TPFLAGS_DEFAULT |
+  Py_TPFLAGS_BASETYPE |
+  Py_TPFLAGS_HAVE_VERSION_TAG,  /* tp_flags */
+	"Persistent ExtensionClass",  /* tp_doc */
 };
 
 static struct PyMethodDef _Persistence_methods[] = {
 	{NULL,	 (PyCFunction)NULL, 0, NULL}		/* sentinel */
 };
 
-#ifndef PyMODINIT_FUNC	/* declarations for DLL import/export */
-#define PyMODINIT_FUNC void
+#ifdef PY3K
+static struct PyModuleDef moduledef =
+{
+    PyModuleDef_HEAD_INIT,
+    "_Persistence",                      /* m_name */
+    _Persistence_module_documentation,   /* m_doc */
+    -1,                                  /* m_size */
+    _Persistence_methods,                /* m_methods */
+    NULL,                                /* m_reload */
+    NULL,                                /* m_traverse */
+    NULL,                                /* m_clear */
+    NULL,                                /* m_free */
+};
 #endif
-PyMODINIT_FUNC
-init_Persistence(void)
+
+static PyObject*
+module_init(void)
 {
   PyObject *m;
 
   if (! ExtensionClassImported)
-    return;
+    return NULL;
 
+#ifdef PY3K
+  cPersistenceCAPI = PyCapsule_Import("persistent.cPersistence.CAPI", 0);
+#else
   cPersistenceCAPI = PyCObject_Import("persistent.cPersistence", "CAPI");
+#endif
   if (cPersistenceCAPI == NULL)
-    return;
+    return NULL;
 
   Ptype.tp_bases = Py_BuildValue("OO", cPersistenceCAPI->pertype, ECBaseType);
   if (Ptype.tp_bases == NULL)
-    return;
+    return NULL;
   Ptype.tp_base = cPersistenceCAPI->pertype;
   Ptype.tp_basicsize = cPersistenceCAPI->pertype->tp_basicsize;
 
-  Ptype.ob_type = ECExtensionClassType;
+  Py_TYPE(&Ptype) = ECExtensionClassType;
+
   if (PyType_Ready(&Ptype) < 0)
-    return;
+    return NULL;
 
   /* Create the module and add the functions */
+#ifdef PY3K
+  m = PyModule_Create(&moduledef);
+#else
   m = Py_InitModule3("_Persistence", _Persistence_methods,
                      _Persistence_module_documentation);
+#endif
 
   if (m == NULL)
-    return;
+    return NULL;
 
   /* Add types: */
   if (PyModule_AddObject(m, "Persistent", (PyObject *)&Ptype) < 0)
-    return;
+    return NULL;
+
+  return m;
 }
 
+#ifdef PY3K
+PyMODINIT_FUNC PyInit__Persistence(void)
+{
+    return module_init();
+}
+#else
+PyMODINIT_FUNC init_Persistence(void)
+{
+    module_init();
+}
+#endif
