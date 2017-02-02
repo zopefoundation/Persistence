@@ -19,7 +19,7 @@ else:
                   include_dirs=['include', 'src']),
     ]
 
-__version__ = '3.0a2'
+__version__ = '3.0a3.dev0'
 
 setup(
     name='Persistence',
