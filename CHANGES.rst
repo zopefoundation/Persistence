@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0a3 (unreleased)
+3.0a3 (2017-02-02)
 ------------------
 
 - Fix isinstance/issubclass for the Python version of PersistentMapping.
