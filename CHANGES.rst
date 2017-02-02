@@ -1,8 +1,8 @@
 Changelog
 =========
 
-3.0 (unreleased)
-----------------
+3.0a2 (unreleased)
+------------------
 
 - #2: Add Python 3 compatibility.
 

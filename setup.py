@@ -19,7 +19,7 @@ else:
                   include_dirs=['include', 'src']),
     ]
 
-__version__ = '3.0.dev0'
+__version__ = '3.0a2.dev0'
 
 setup(
     name='Persistence',
@@ -42,7 +42,6 @@ setup(
         "Programming Language :: Python :: 2",
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.3",
         "Programming Language :: Python :: 3.4",
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
