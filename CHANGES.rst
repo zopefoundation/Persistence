@@ -4,6 +4,7 @@ Changelog
 3.0a4 (unreleased)
 ------------------
 
+- Update included `ExtensionClass.h` header file.
 
 3.0a3 (2017-02-02)
 ------------------
