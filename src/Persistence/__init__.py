@@ -36,18 +36,16 @@ class Persistent(persistent.Persistent, Base):
     """
     __slots__ = ()
 
-    if not CAPI:
-
-        def __getattribute__(self, name):
-            """ See IPersistent.
-            """
-            oga = Base_getattro
-            if (not name.startswith('_p_') and
-                    name not in _SPECIAL_NAMES):
-                if oga(self, '_Persistent__flags') is None:
-                    oga(self, '_p_activate')()
-                oga(self, '_p_accessed')()
-            return oga(self, name)
+    def __getattribute__(self, name):
+        """ See IPersistent.
+        """
+        oga = Base_getattro
+        if (not name.startswith('_p_') and
+                name not in _SPECIAL_NAMES):
+            if oga(self, '_Persistent__flags') is None:
+                oga(self, '_p_activate')()
+            oga(self, '_p_accessed')()
+        return oga(self, name)
 
 
 if 'PURE_PYTHON' not in os.environ:  # pragma no cover

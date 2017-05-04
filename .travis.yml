@@ -8,10 +8,12 @@ python:
     - "pypy"
     - "pypy3.3-5.2-alpha1"
 install:
-    - python bootstrap.py
-    - bin/buildout
+    - pip install -U setuptools==33.1.1
+    - pip install zc.buildout
+    - buildout bootstrap
+    - buildout tox:env=travis install test
 script:
-    - bin/test -v1
+    - bin/test-travis -v1
 notifications:
     email: false
 cache:
