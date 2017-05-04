@@ -12,18 +12,20 @@
 #
 ##############################################################################
 import os
+import platform
 
 from ExtensionClass import Base, Base_getattro
 import persistent
 from persistent.persistence import _SPECIAL_NAMES
 
-# persistent supports the C API on both Python 2 and 3, but it can
-# be disabled or depend on the Python implementation (e.g. PyPy).
-CAPI = True
-try:
+IS_PYPY = getattr(platform, 'python_implementation', lambda: None)() == 'PyPy'
+IS_PURE = 'PURE_PYTHON' in os.environ
+
+CAPI = not (IS_PYPY or IS_PURE)
+if CAPI:
+    # Both of our dependencies need to have working C extensions
+    from ExtensionClass import _ExtensionClass  # NOQA
     import persistent.cPersistence
-except ImportError:
-    CAPI = False
 
 
 class Persistent(persistent.Persistent, Base):
@@ -48,11 +50,9 @@ class Persistent(persistent.Persistent, Base):
         return oga(self, name)
 
 
-if 'PURE_PYTHON' not in os.environ:  # pragma no cover
-    try:
-        from Persistence._Persistence import Persistent  # NOQA
-    except ImportError:
-        pass
+if CAPI:  # pragma no cover
+    # Override the Python implementation with the C one
+    from Persistence._Persistence import Persistent  # NOQA
 
 Overridable = Persistent
 

@@ -12,20 +12,15 @@
 #
 ##############################################################################
 
-import os
 import pickle
-import platform
 from struct import pack
 import time
 import unittest
 
+from Persistence import IS_PYPY, IS_PURE
 from Persistence import Persistent
 from persistent.picklecache import PickleCache
 from persistent.TimeStamp import TimeStamp
-
-py_impl = getattr(platform, 'python_implementation', lambda: None)
-IS_PYPY = py_impl() == 'PyPy'
-IS_PURE = 'PURE_PYTHON' in os.environ
 
 
 def p64(v):
@@ -244,3 +239,12 @@ class PersistenceTest(unittest.TestCase):
 
     # TODO:  Need to decide how __setattr__ and __delattr__ should work,
     # then write tests.
+
+    def test_compilation(self):
+        from Persistence import CAPI
+        if not CAPI:
+            with self.assertRaises((AttributeError, ImportError)):
+                from Persistence import _Persistence
+        else:
+            from Persistence import _Persistence
+            self.assertTrue(hasattr(_Persistence, 'Persistent'))

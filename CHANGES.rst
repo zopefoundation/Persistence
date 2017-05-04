@@ -4,6 +4,8 @@ Changelog
 3.0a4 (unreleased)
 ------------------
 
+- #4: Ensure our dependencies match our expactations about C extensions.
+
 - Update included `ExtensionClass.h` header file.
 
 3.0a3 (2017-02-02)
