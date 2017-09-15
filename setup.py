@@ -19,11 +19,11 @@ else:
                   include_dirs=['include', 'src']),
     ]
 
-__version__ = '3.0a4.dev0'
+version = '3.0a4.dev0'
 
 setup(
     name='Persistence',
-    version=__version__,
+    version=version,
     url='http://pypi.python.org/pypi/Persistence',
     license='ZPL 2.1',
     description='Persistent ExtensionClass',
