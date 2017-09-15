@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0a4 (unreleased)
+3.0b1 (2017-09-15)
 ------------------
 
 - #4: Ensure our dependencies match our expectations about C extensions.
