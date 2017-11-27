@@ -4,8 +4,7 @@ Changelog
 3.0b2 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- add Appveyor configuration to automate building Windows eggs
 
 3.0b1 (2017-09-15)
 ------------------
