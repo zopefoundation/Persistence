@@ -1,10 +1,12 @@
 Changelog
 =========
 
-3.0b2 (unreleased)
+3.0b2 (2017-11-27)
 ------------------
 
 - add Appveyor configuration to automate building Windows eggs
+
+- fix for compilers that only support C89 syntax (e.g. on Windows)
 
 3.0b1 (2017-09-15)
 ------------------
