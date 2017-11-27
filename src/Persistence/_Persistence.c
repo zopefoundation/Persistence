@@ -95,11 +95,13 @@ P_getattr(cPersistentObject *self, PyObject *name)
 {
   PyObject *v=NULL;
 
+  char *s;
+
   PyObject* as_bytes = convert_name(name);
   if (!as_bytes)
     return NULL;
 
-  char *s = PyBytes_AS_STRING(as_bytes);
+  s = PyBytes_AS_STRING(as_bytes);
 
   if (s[0] != '_' || unghost_getattr(s))
     {
