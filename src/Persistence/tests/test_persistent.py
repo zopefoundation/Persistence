@@ -19,7 +19,7 @@ import unittest
 
 from Persistence import IS_PYPY, IS_PURE
 from Persistence import Persistent
-from persistent.picklecache import PickleCache
+from persistent import PickleCache
 from persistent.TimeStamp import TimeStamp
 
 
