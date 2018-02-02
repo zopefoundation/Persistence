@@ -19,7 +19,7 @@ import unittest
 
 from Persistence import IS_PYPY, IS_PURE
 from Persistence import Persistent
-from persistent.picklecache import PickleCache
+from persistent import PickleCache
 from persistent.TimeStamp import TimeStamp
 
 
@@ -108,29 +108,18 @@ class PersistenceTest(unittest.TestCase):
 
         self.jar.add(obj)
 
-        if not (IS_PURE or IS_PYPY):
-            # Can change oid of cache object since persistent 4.0.8
+        # Can't change oid of cache object.
+        with self.assertRaises(ValueError):
             del obj._p_oid
+
+        with self.assertRaises(ValueError):
             obj._p_oid = 12
+
+        with self.assertRaises(ValueError):
             del obj._p_jar
+
+        with self.assertRaises(ValueError):
             obj._p_jar = 12
-        else:
-            # Can't change oid of cache object.
-            def deloid():
-                del obj._p_oid
-            self.assertRaises(ValueError, deloid)
-
-            def setoid():
-                obj._p_oid = 12
-            self.assertRaises(ValueError, setoid)
-
-            def deloid():
-                del obj._p_jar
-            self.assertRaises(ValueError, deloid)
-
-            def setoid():
-                obj._p_jar = 12
-            self.assertRaises(ValueError, setoid)
 
     def testChanged(self):
         obj = P()
