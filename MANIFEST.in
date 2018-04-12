@@ -6,6 +6,9 @@ include .coveragerc
 include buildout.cfg
 include tox.ini
 
+include appveyor.yml
+exclude appveyor.yml
+
 recursive-include include *
 recursive-include src *
 
