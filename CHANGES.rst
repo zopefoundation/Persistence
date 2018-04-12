@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0b3 (unreleased)
+3.0b3 (2018-04-12)
 ------------------
 
 - Make tests compatible with `persistent >= 4.2.3`.
