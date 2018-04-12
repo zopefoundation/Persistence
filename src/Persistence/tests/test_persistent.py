@@ -17,7 +17,6 @@ from struct import pack
 import time
 import unittest
 
-from Persistence import IS_PYPY, IS_PURE
 from Persistence import Persistent
 from persistent import PickleCache
 from persistent.TimeStamp import TimeStamp
@@ -132,7 +131,7 @@ class PersistenceTest(unittest.TestCase):
 
         obj.x = 1
         self.assertEqual(obj._p_changed, 1)
-        self.assert_(obj in self.jar.registered)
+        self.assertIn(obj, self.jar.registered)
 
         obj._p_changed = 0
         self.assertEqual(obj._p_changed, 0)
@@ -140,7 +139,7 @@ class PersistenceTest(unittest.TestCase):
 
         obj._p_changed = 1
         self.assertEqual(obj._p_changed, 1)
-        self.assert_(obj in self.jar.registered)
+        self.assertIn(obj, self.jar.registered)
 
         # setting obj._p_changed to None ghostifies if the
         # object is in the up-to-date state, but not otherwise.
@@ -183,7 +182,7 @@ class PersistenceTest(unittest.TestCase):
         ts = TimeStamp(*time.gmtime(t)[:6])
         obj._p_serial = ts.raw()
         self.assertEqual(obj._p_mtime, t)
-        self.assert_(isinstance(obj._p_mtime, float))
+        self.assertIsInstance(obj._p_mtime, float)
 
     def testPicklable(self):
         obj = P()
