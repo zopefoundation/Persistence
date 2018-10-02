@@ -5,11 +5,11 @@ python:
     - 3.4
     - 3.5
     - 3.6
+    - 3.7
     - pypy
     - pypy3
 install:
     - pip install six==1.10.0 # force to avoid conflict with zc.recipe.testrunner
-    - pip install -U setuptools==33.1.1
     - pip install zc.buildout
     - pip install coveralls coverage
     - buildout bootstrap

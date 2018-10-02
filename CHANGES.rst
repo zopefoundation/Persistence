@@ -4,8 +4,7 @@ Changelog
 3.0b4 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Added Support for Python 3.7
 
 3.0b3 (2018-04-12)
 ------------------
