@@ -1,10 +1,10 @@
 Changelog
 =========
 
-3.0b4 (unreleased)
+3.0b4 (2018-10-05)
 ------------------
 
-- Added Support for Python 3.7
+- Add Support for Python 3.7.
 
 3.0b3 (2018-04-12)
 ------------------
