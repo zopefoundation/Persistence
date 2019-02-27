@@ -14,5 +14,6 @@ develop-eggs/
 eggs/
 *.egg-info/
 .coverage
+.coverage.*
 coverage.xml
 .tox
