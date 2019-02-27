@@ -4,7 +4,7 @@ Changelog
 3.0b5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Drop support for Python 3.4.
 
 
 3.0b4 (2018-10-05)
