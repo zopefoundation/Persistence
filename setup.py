@@ -24,7 +24,7 @@ version = '3.0b5.dev0'
 setup(
     name='Persistence',
     version=version,
-    url='http://pypi.python.org/pypi/Persistence',
+    url='https://github.com/zopefoundation/Persistence',
     license='ZPL 2.1',
     description='Persistent ExtensionClass',
     author='Zope Foundation and Contributors',
@@ -45,6 +45,7 @@ setup(
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: Implementation :: CPython",
         "Programming Language :: Python :: Implementation :: PyPy",
     ],
