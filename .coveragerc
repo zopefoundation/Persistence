@@ -1,7 +1,13 @@
 [run]
 branch = True
-source = src
+source = Persistence
 
 [report]
 precision = 2
 show_missing = True
+
+[paths]
+source =
+  src/
+  .tox/*/lib/*/site-packages/
+  .tox/pypy*/site-packages/
