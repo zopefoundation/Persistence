@@ -1,60 +1,27 @@
 Changelog
 =========
 
-3.0b5 (unreleased)
-------------------
+3.0 (unreleased)
+----------------
 
-- Drop support for Python 3.4.
+Changes since 2.13.2:
 
-- Add support for Python 3.8a3.
-
-
-3.0b4 (2018-10-05)
-------------------
-
-- Add Support for Python 3.7.
-
-3.0b3 (2018-04-12)
-------------------
-
-- Make tests compatible with `persistent >= 4.2.3`.
-
-3.0b2 (2017-11-27)
-------------------
-
-- add Appveyor configuration to automate building Windows eggs
-
-- fix for compilers that only support C89 syntax (e.g. on Windows)
-
-3.0b1 (2017-09-15)
-------------------
-
-- #4: Ensure our dependencies match our expectations about C extensions.
-
-- Update included `ExtensionClass.h` header file.
-
-3.0a3 (2017-02-02)
-------------------
-
-- Fix isinstance/issubclass for the Python version of PersistentMapping.
-
-3.0a2 (2017-02-02)
-------------------
-
-- #2: Add Python 3 compatibility.
-
-- #1: Resolve meta class conflict for PersistentMapping.
-
-- Update ExtensionClass and persistent headers and minimum versions.
+- Add support for Python 3.5, 3.6, 3.7 and 3.8a3.
 
 - Drop support for Python 2.6.
 
-3.0a1 (2014-11-02)
-------------------
+- Make tests compatible with `persistent >= 4.2.3`.
 
-- Add a Python stub implementation of the Persistent class.
+- Fix for compilers that only support C89 syntax (e.g. on Windows).
 
-- Tests: Use `__eq__` instead of `__cmp__`.
+- Ensure our dependencies match our expectations about C extensions.
+  (`#4 <https://github.com/zopefoundation/Persistence/issues/4>`_)
+
+- Update ExtensionClass and persistent headers.
+
+- Fix isinstance/issubclass for the Python version of PersistentMapping.
+
+- Add AppVeyor configuration to automate building Windows eggs.
 
 2.13.2 (2010-06-16)
 -------------------
