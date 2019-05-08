@@ -21,11 +21,12 @@ install:
 
 build_script:
   - pip install -U setuptools
-  - pip install wheel
+  - pip install wheel zc.buildout zope.testrunner
   - python -W ignore setup.py -q bdist_wheel
 
 test_script:
-  - python setup.py test -q
+  - buildout
+  - bin\test.exe
 
 artifacts:
   - path: 'dist\*.whl'
