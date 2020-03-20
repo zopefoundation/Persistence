@@ -1,10 +1,10 @@
 Changelog
 =========
 
-3.1 (unreleased)
+4.0 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Drop support for Python 2.7 and PyPy2.
 
 
 3.0 (2019-05-08)

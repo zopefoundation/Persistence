@@ -138,7 +138,6 @@ static struct PyMethodDef _Persistence_methods[] = {
 	{NULL,	 (PyCFunction)NULL, 0, NULL}		/* sentinel */
 };
 
-#ifdef PY3K
 static struct PyModuleDef moduledef =
 {
     PyModuleDef_HEAD_INIT,
@@ -151,7 +150,6 @@ static struct PyModuleDef moduledef =
     NULL,                                /* m_clear */
     NULL,                                /* m_free */
 };
-#endif
 
 static PyObject*
 module_init(void)
@@ -161,11 +159,7 @@ module_init(void)
   if (! ExtensionClassImported)
     return NULL;
 
-#ifdef PY3K
   cPersistenceCAPI = PyCapsule_Import("persistent.cPersistence.CAPI", 0);
-#else
-  cPersistenceCAPI = PyCObject_Import("persistent.cPersistence", "CAPI");
-#endif
   if (cPersistenceCAPI == NULL)
     return NULL;
 
@@ -181,13 +175,7 @@ module_init(void)
     return NULL;
 
   /* Create the module and add the functions */
-#ifdef PY3K
   m = PyModule_Create(&moduledef);
-#else
-  m = Py_InitModule3("_Persistence", _Persistence_methods,
-                     _Persistence_module_documentation);
-#endif
-
   if (m == NULL)
     return NULL;
 
@@ -198,14 +186,7 @@ module_init(void)
   return m;
 }
 
-#ifdef PY3K
 PyMODINIT_FUNC PyInit__Persistence(void)
 {
     return module_init();
 }
-#else
-PyMODINIT_FUNC init_Persistence(void)
-{
-    module_init();
-}
-#endif
