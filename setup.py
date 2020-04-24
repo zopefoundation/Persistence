@@ -51,6 +51,7 @@ setup(
         "Programming Language :: Python :: Implementation :: PyPy",
     ],
     ext_modules=ext_modules,
+    python_requires='>=3.5, <4',
     install_requires=[
         'ExtensionClass >= 4.2.0',
         'persistent >= 4.1.1',
