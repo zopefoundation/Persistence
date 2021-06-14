@@ -22,10 +22,10 @@ IS_PYPY = getattr(platform, 'python_implementation', lambda: None)() == 'PyPy'
 IS_PURE = 'PURE_PYTHON' in os.environ
 
 CAPI = not (IS_PYPY or IS_PURE)
-if CAPI:
-    # Both of our dependencies need to have working C extensions
-    from ExtensionClass import _ExtensionClass  # NOQA
-    import persistent.cPersistence
+# if CAPI:
+#     # Both of our dependencies need to have working C extensions
+#     from ExtensionClass import _ExtensionClass  # NOQA
+#     import persistent.cPersistence
 
 
 class Persistent(persistent.Persistent, Base):
@@ -50,9 +50,9 @@ class Persistent(persistent.Persistent, Base):
         return oga(self, name)
 
 
-if CAPI:  # pragma no cover
-    # Override the Python implementation with the C one
-    from Persistence._Persistence import Persistent  # NOQA
+# if CAPI:  # pragma no cover
+#     # Override the Python implementation with the C one
+#     from Persistence._Persistence import Persistent  # NOQA
 
 Overridable = Persistent
 
