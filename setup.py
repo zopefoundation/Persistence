@@ -55,7 +55,6 @@ setup(
         'ExtensionClass >= 4.2.0',
         'persistent >= 4.1.1',
         'six',
-        'importlib-resources <1; python_version<"3.7"',
     ],
     include_package_data=True,
     zip_safe=False,
