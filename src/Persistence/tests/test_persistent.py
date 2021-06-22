@@ -233,6 +233,6 @@ class PersistenceTest(unittest.TestCase):
         if not CAPI:
             with self.assertRaises((AttributeError, ImportError)):
                 from Persistence import _Persistence
-        else:
+        else:  # pragma: no cover
             from Persistence import _Persistence
             self.assertTrue(hasattr(_Persistence, 'Persistent'))

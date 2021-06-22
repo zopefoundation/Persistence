@@ -34,7 +34,7 @@ class _Meta(ExtensionClass, ABCMeta):
     __subclasscheck__ = ExtensionClass.__subclasscheck__
 
 
-if six.PY2:
+if six.PY2:  # pragma: no cover
     # Neither six.with_metaclass nor six.add_metaclass work under
     # both Python 2 and 3 for us, so we provide to code paths.
 
@@ -54,7 +54,7 @@ if six.PY2:
                 del state['_container']
             self.__dict__.update(state)
 
-else:  # pragma: no cover
+else:  # pragma: PY3
 
     def with_metaclass(meta, *bases):
         # Adopted from six.with_metaclass.

@@ -19,10 +19,10 @@ import persistent
 from persistent.persistence import _SPECIAL_NAMES
 
 IS_PYPY = getattr(platform, 'python_implementation', lambda: None)() == 'PyPy'
-IS_PURE = 'PURE_PYTHON' in os.environ
+IS_PURE = int(os.environ.get('PURE_PYTHON', '0'))
 
 CAPI = not (IS_PYPY or IS_PURE)
-if CAPI:
+if CAPI:  # pragma: no cover
     # Both of our dependencies need to have working C extensions
     from ExtensionClass import _ExtensionClass  # NOQA
     import persistent.cPersistence
@@ -50,7 +50,7 @@ class Persistent(persistent.Persistent, Base):
         return oga(self, name)
 
 
-if CAPI:  # pragma no cover
+if CAPI:  # pragma: no cover
     # Override the Python implementation with the C one
     from Persistence._Persistence import Persistent  # NOQA
 

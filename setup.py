@@ -9,7 +9,7 @@ CHANGES = open('CHANGES.rst').read()
 # PyPy won't build the extension
 py_impl = getattr(platform, 'python_implementation', lambda: None)
 is_pypy = py_impl() == 'PyPy'
-is_pure = 'PURE_PYTHON' in os.environ
+is_pure = int(os.environ.get('PURE_PYTHON', '0'))
 if is_pypy or is_pure:
     ext_modules = []
 else:
@@ -37,6 +37,7 @@ setup(
         "Environment :: Web Environment",
         "Framework :: Zope",
         "Framework :: Zope :: 4",
+        "Framework :: Zope :: 5",
         "License :: OSI Approved :: Zope Public License",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
@@ -47,15 +48,19 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: Implementation :: CPython",
         "Programming Language :: Python :: Implementation :: PyPy",
     ],
     ext_modules=ext_modules,
     install_requires=[
-        'ExtensionClass >= 4.2.0',
+        'ExtensionClass >= 4.5.1',
         'persistent >= 4.1.1',
         'six',
     ],
+    extras_require={
+        'test': ['zope.testrunner'],
+    },
     include_package_data=True,
     zip_safe=False,
 )

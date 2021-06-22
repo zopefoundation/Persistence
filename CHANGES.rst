@@ -4,7 +4,9 @@ Changelog
 3.1 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Create wheels for Linux (2010, 2014 and aarch) and MacOS.
+
+- Add support for Python 3.9.
 
 
 3.0 (2019-05-08)
