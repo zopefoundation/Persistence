@@ -1,0 +1,35 @@
+# Generated from:
+# https://github.com/zopefoundation/meta/tree/master/config/c-code
+[meta]
+template = "c-code"
+commit-id = "ce405f15dc740bf7cebc3ffe0fd800a633012fb1"
+
+[python]
+with-appveyor = true
+with-windows = false
+with-pypy = true
+with-legacy-python = true
+with-docs = false
+with-sphinx-doctests = false
+
+[tox]
+use-flake8 = true
+testenv-deps = [
+    "wheel",
+    ]
+testenv-setenv = [
+    "PIP_NO_CACHE = 1",
+    ]
+testenv-additional = [
+    "install_command = pip install --no-cache-dir --no-binary=:all: {opts} {packages}",
+    ]
+
+[coverage]
+fail-under = 97
+
+[manifest]
+additional-rules = [
+    "include *.sh",
+    "recursive-include include *.h",
+    "recursive-include src *.c",
+    ]
