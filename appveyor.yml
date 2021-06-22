@@ -1,8 +1,9 @@
 # Generated from:
 # https://github.com/zopefoundation/meta/tree/master/config/c-code
-# Currently the builds use @dataflake's Appveyor account.  The PyPI token belongs
-# to zope.wheelbuilder, which is managed by @mgedmin and @dataflake.
 environment:
+
+  # Currently the builds use @dataflake's Appveyor account.  The PyPI token belongs
+  # to zope.wheelbuilder, which is managed by @mgedmin and @dataflake.
   global:
     TWINE_USERNAME: __token__
     TWINE_PASSWORD:
@@ -40,7 +41,8 @@ install:
 matrix:
   fast_finish: true
 
-build: false
+build_script:
+  - python -W ignore setup.py -q bdist_wheel
 
 test_script:
   - zope-testrunner --test-path=src
