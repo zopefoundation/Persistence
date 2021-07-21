@@ -9,8 +9,7 @@ CHANGES = open('CHANGES.rst').read()
 # PyPy won't build the extension
 py_impl = getattr(platform, 'python_implementation', lambda: None)
 is_pypy = py_impl() == 'PyPy'
-is_pure = int(os.environ.get('PURE_PYTHON', '0'))
-if is_pypy or is_pure:
+if is_pypy:
     ext_modules = []
 else:
     ext_modules = [
