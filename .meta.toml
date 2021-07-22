@@ -20,9 +20,6 @@ testenv-deps = [
 testenv-setenv = [
     "PIP_NO_CACHE = 1",
     ]
-testenv-additional = [
-    "install_command = pip install --no-cache-dir --no-binary=:all: {opts} {packages}",
-    ]
 
 [coverage]
 fail-under = 97
