@@ -8,6 +8,10 @@ Changelog
 
 - Add support for Python 3.9.
 
+- On CPython no longer omit compiling the C code when ``PURE_PYTHON`` is set.
+  Just evaluate it at runtime.
+  (`#27 <https://github.com/zopefoundation/Persistence/issues/27>`_)
+
 
 3.0 (2019-05-08)
 ----------------
