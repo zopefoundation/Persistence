@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.1 (unreleased)
+3.1 (2021-07-23)
 ----------------
 
 - Create wheels for Linux (2010, 2014 and aarch64) and MacOS.
