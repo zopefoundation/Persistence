@@ -17,6 +17,9 @@ from struct import pack
 import time
 import unittest
 
+from Persistence import CAPI
+from Persistence import IS_PYPY
+from Persistence import IS_PURE
 from Persistence import Persistent
 from persistent import PickleCache
 from persistent.TimeStamp import TimeStamp
@@ -229,10 +232,14 @@ class PersistenceTest(unittest.TestCase):
     # then write tests.
 
     def test_compilation(self):
-        from Persistence import CAPI
-        if not CAPI:
-            with self.assertRaises((AttributeError, ImportError)):
-                from Persistence import _Persistence
-        else:
+        self.assertEqual(CAPI, not (IS_PYPY or IS_PURE))
+        try:
+            import persistent.cPersistence  # noqa: F401 unused, needed for Py3
             from Persistence import _Persistence
-            self.assertTrue(hasattr(_Persistence, 'Persistent'))
+            cPersistent = _Persistence.Persistent
+        except ImportError:
+            cPersistent = None  # PyPy never has a C module.
+        if CAPI:  # pragma: no cover
+            self.assertEqual(Persistent, cPersistent)
+        else:
+            self.assertNotEqual(Persistent, cPersistent)

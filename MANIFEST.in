@@ -1,18 +1,13 @@
+# Generated from:
+# https://github.com/zopefoundation/meta/tree/master/config/c-code
 include *.rst
 include *.txt
-include *.py
-
-include .coveragerc
 include buildout.cfg
 include tox.ini
-
 include appveyor.yml
-exclude appveyor.yml
+include .coveragerc
 
-recursive-include include *
-recursive-include src *
-
-global-exclude *.dll
-global-exclude *.pyc
-global-exclude *.pyo
-global-exclude *.so
+recursive-include src *.py
+include *.sh
+recursive-include include *.h
+recursive-include src *.c
