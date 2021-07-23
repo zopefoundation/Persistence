@@ -19,6 +19,7 @@ import unittest
 
 from Persistence import CAPI
 from Persistence import IS_PYPY
+from Persistence import IS_PURE
 from Persistence import Persistent
 from persistent import PickleCache
 from persistent.TimeStamp import TimeStamp
@@ -230,11 +231,15 @@ class PersistenceTest(unittest.TestCase):
     # TODO:  Need to decide how __setattr__ and __delattr__ should work,
     # then write tests.
 
-    @unittest.skipIf(IS_PYPY, 'PyPy never has a C module.')
     def test_compilation(self):
-        import persistent.cPersistence    # noqa: F401 unused (needed for Py3)
-        from Persistence import _Persistence
+        self.assertEqual(CAPI, not (IS_PYPY or IS_PURE))
+        try:
+            import persistent.cPersistence  # noqa: F401 unused, needed for Py3
+            from Persistence import _Persistence
+            cPersistent = _Persistence.Persistent
+        except ImportError:
+            cPersistent = None  # PyPy never has a C module.
         if CAPI:  # pragma: no cover
-            self.assertEqual(Persistent, _Persistence.Persistent)
+            self.assertEqual(Persistent, cPersistent)
         else:
-            self.assertNotEqual(Persistent, _Persistence.Persistent)
+            self.assertNotEqual(Persistent, cPersistent)
