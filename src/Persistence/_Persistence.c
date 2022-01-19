@@ -175,7 +175,7 @@ module_init(void)
   Ptype.tp_base = cPersistenceCAPI->pertype;
   Ptype.tp_basicsize = cPersistenceCAPI->pertype->tp_basicsize;
 
-  Py_TYPE(&Ptype) = ECExtensionClassType;
+  Py_SET_TYPE(&Ptype, ECExtensionClassType);
 
   if (PyType_Ready(&Ptype) < 0)
     return NULL;
