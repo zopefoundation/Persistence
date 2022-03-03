@@ -7,3 +7,5 @@ use ``persistent.Persistent`` from the persistent_ distribution (formerly in ZOD
 
 .. _ExtensionClass : https://pypi.org/project/ExtensionClass/
 .. _persistent : https://pypi.org/project/persistent/
+
+.. Persistence
