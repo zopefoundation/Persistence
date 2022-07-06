@@ -14,9 +14,11 @@
 import os
 import platform
 
-from ExtensionClass import Base, Base_getattro
 import persistent
+from ExtensionClass import Base
+from ExtensionClass import Base_getattro
 from persistent.persistence import _SPECIAL_NAMES
+
 
 IS_PYPY = getattr(platform, 'python_implementation', lambda: None)() == 'PyPy'
 IS_PURE = int(os.environ.get('PURE_PYTHON', '0'))
@@ -24,8 +26,8 @@ IS_PURE = int(os.environ.get('PURE_PYTHON', '0'))
 CAPI = not (IS_PYPY or IS_PURE)
 if CAPI:  # pragma: no cover
     # Both of our dependencies need to have working C extensions
-    from ExtensionClass import _ExtensionClass  # NOQA
     import persistent.cPersistence
+    from ExtensionClass import _ExtensionClass  # NOQA
 
 
 class Persistent(persistent.Persistent, Base):
