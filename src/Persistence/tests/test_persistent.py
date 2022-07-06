@@ -13,16 +13,17 @@
 ##############################################################################
 
 import pickle
-from struct import pack
 import time
 import unittest
+from struct import pack
 
-from Persistence import CAPI
-from Persistence import IS_PYPY
-from Persistence import IS_PURE
-from Persistence import Persistent
 from persistent import PickleCache
 from persistent.TimeStamp import TimeStamp
+
+from Persistence import CAPI
+from Persistence import IS_PURE
+from Persistence import IS_PYPY
+from Persistence import Persistent
 
 
 def p64(v):
@@ -235,6 +236,7 @@ class PersistenceTest(unittest.TestCase):
         self.assertEqual(CAPI, not (IS_PYPY or IS_PURE))
         try:
             import persistent.cPersistence  # noqa: F401 unused, needed for Py3
+
             from Persistence import _Persistence
             cPersistent = _Persistence.Persistent
         except ImportError:

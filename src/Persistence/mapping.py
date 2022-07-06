@@ -14,9 +14,10 @@
 
 from abc import ABCMeta
 
+import six
+
 from ExtensionClass import ExtensionClass
 from persistent.mapping import PersistentMapping as _BasePersistentMapping
-import six
 
 from Persistence import Persistent
 
