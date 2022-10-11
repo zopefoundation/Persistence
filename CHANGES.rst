@@ -4,7 +4,10 @@ Changelog
 3.4 (unreleased)
 ----------------
 
-- Add support for Python 3.11 as of (3.11.0b3).
+- Add support for Python 3.11 as of (3.11.0rc2).
+
+- Disable unsafe math optimizations in C code.
+  (`#55 <https://github.com/zopefoundation/ExtensionClass/pull/55>`_)
 
 
 3.3 (2022-03-10)
