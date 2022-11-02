@@ -4,7 +4,7 @@ Changelog
 3.5 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Add support for final Python 3.11 release.
 
 
 3.4 (2022-10-11)
