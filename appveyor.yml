@@ -9,24 +9,11 @@ environment:
       secure: vSlDBj79vziJOA5k3z16r1z/PWLKowwjFS0ckiPErAActoQ0c3xoDHVqPFi89JTlfNrVxrtdpuB+LwAhD+6sciqD7UuyWNUu7LwTxzRSVnWIDf6KSsTbm+9BOTe2+lCScOflzsfjmXisUfntHzM7daQZsVsgKQuvYFgCMHQ1RW4fCpdqcWVNw8Br7dnOJcmSapywGVe8I6vTqW0/F3LYwYy/Qiizwarc7OQNPpz2KfMkyupyY7TsvtxaY5W4g5IRDjBYEtHqFbbIGHmls4Xqhw==
 
   matrix:
-    - python: 27
-    - python: 27-x64
-    - python: 35
-    - python: 35-x64
-    - python: 36
-    - python: 36-x64
-    - python: 37
     - python: 37-x64
-    - python: 38
     - python: 38-x64
-    - python: 39
     - python: 39-x64
-    - python: 310
     - python: 310-x64
-    # `multibuild` cannot install non-final versions as they are not on
-    # ftp.python.org, so we skip Python 3.11 until its final release:
-    # - python: 311
-    # - python: 311-x64
+    - python: 311-x64
 
 install:
   - "SET PYTHONVERSION=%PYTHON%"
