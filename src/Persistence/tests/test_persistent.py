@@ -31,7 +31,7 @@ def p64(v):
     return pack(">Q", v)
 
 
-class Jar(object):
+class Jar:
     """Testing stub for _p_jar attribute."""
 
     def __init__(self):
@@ -85,7 +85,7 @@ class H2(Persistent):
         self.n = 0
 
     def __getattribute__(self, attr):
-        supergetattr = super(H2, self).__getattribute__
+        supergetattr = super().__getattribute__
         try:
             return supergetattr(attr)
         except AttributeError:
@@ -172,7 +172,7 @@ class PersistenceTest(unittest.TestCase):
         self.assertRaises(ValueError, set, 1)
         self.assertRaises(ValueError, set, "0123")
         self.assertRaises(ValueError, set, "012345678")
-        self.assertRaises(ValueError, set, u"01234567")
+        self.assertRaises(ValueError, set, "01234567")
 
         obj._p_serial = b"01234567"
         del obj._p_serial

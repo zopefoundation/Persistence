@@ -14,8 +14,6 @@
 
 from abc import ABCMeta
 
-import six
-
 from ExtensionClass import ExtensionClass
 from persistent.mapping import PersistentMapping as _BasePersistentMapping
 
@@ -35,46 +33,25 @@ class _Meta(ExtensionClass, ABCMeta):
     __subclasscheck__ = ExtensionClass.__subclasscheck__
 
 
-if six.PY2:  # pragma: no cover
-    # Neither six.with_metaclass nor six.add_metaclass work under
-    # both Python 2 and 3 for us, so we provide to code paths.
+def with_metaclass(meta, *bases):
+    # Adopted from six.with_metaclass.
 
-    class PersistentMapping(Persistent, _BasePersistentMapping):
-        """Legacy persistent mapping class
+    # Create a base class with a metaclass.
+    # This requires a bit of explanation: the basic idea is to make a dummy
+    # metaclass for one level of class instantiation that replaces itself
+    # with the actual metaclass.
 
-        This class mixes in :class:`ExtensionClass.Base` if it is present.
+    class metaclass(meta):  # NOQA
 
-        Unless you actually want ExtensionClass semantics, use
-        :class:`persistent.mapping.PersistentMapping` instead.
-        """
-        __metaclass__ = _Meta
+        def __new__(cls, name, this_bases, d):
+            return meta(name, bases, d)
+    # Use ExtensionClass.__new__ instead of type.__new__
+    return ExtensionClass.__new__(metaclass, 'temporary_class', (), {})
 
-        def __setstate__(self, state):
-            if 'data' not in state:
-                state['data'] = state['_container']
-                del state['_container']
-            self.__dict__.update(state)
 
-else:  # pragma: PY3
-
-    def with_metaclass(meta, *bases):
-        # Adopted from six.with_metaclass.
-
-        # Create a base class with a metaclass.
-        # This requires a bit of explanation: the basic idea is to make a dummy
-        # metaclass for one level of class instantiation that replaces itself
-        # with the actual metaclass.
-
-        class metaclass(meta):  # NOQA
-
-            def __new__(cls, name, this_bases, d):
-                return meta(name, bases, d)
-        # Use ExtensionClass.__new__ instead of type.__new__
-        return ExtensionClass.__new__(metaclass, 'temporary_class', (), {})
-
-    class PersistentMapping(with_metaclass(
-            _Meta, Persistent, _BasePersistentMapping)):
-        """Legacy persistent mapping class
+class PersistentMapping(with_metaclass(
+        _Meta, Persistent, _BasePersistentMapping)):
+    """Legacy persistent mapping class
 
         This class mixes in :class:`ExtensionClass.Base` if it is present.
 
@@ -82,8 +59,8 @@ else:  # pragma: PY3
         :class:`persistent.mapping.PersistentMapping` instead.
         """
 
-        def __setstate__(self, state):
-            if 'data' not in state:
-                state['data'] = state['_container']
-                del state['_container']
-            self.__dict__.update(state)
+    def __setstate__(self, state):
+        if 'data' not in state:
+            state['data'] = state['_container']
+            del state['_container']
+        self.__dict__.update(state)

@@ -20,7 +20,7 @@ from Persistence import Persistent
 def print_dict(d):
     d = d.items()
     print('{%s}' % (', '.join(
-        [('%r: %r' % (k, v)) for (k, v) in sorted(d)]
+        [('{!r}: {!r}'.format(k, v)) for (k, v) in sorted(d)]
     )))
 
 
