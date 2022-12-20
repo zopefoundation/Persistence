@@ -9,6 +9,18 @@ Changelog
 - Drop support for Python 2.7, 3.5, 3.6.
 
 
+3.6 (2022-11-17)
+----------------
+
+- Add support for building arm64 wheels on macOS.
+
+
+3.5 (2022-11-03)
+----------------
+
+- Add support for final Python 3.11 release.
+
+
 3.4 (2022-10-11)
 ----------------
 
