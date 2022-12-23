@@ -21,7 +21,7 @@ else:
                   include_dirs=['include', 'src']),
     ]
 
-version = '3.7.dev0'
+version = '4.0.dev0'
 
 setup(
     name='Persistence',
@@ -43,11 +43,7 @@ setup(
         "License :: OSI Approved :: Zope Public License",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.5",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
@@ -60,7 +56,6 @@ setup(
     install_requires=[
         'ExtensionClass >= 4.6',
         'persistent >= 4.1.1',
-        'six',
     ],
     extras_require={
         'test': ['zope.testrunner'],
