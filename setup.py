@@ -21,7 +21,7 @@ else:
                   include_dirs=['include', 'src']),
     ]
 
-version = '4.1.dev0'
+version = '4.0.post1'
 
 setup(
     name='Persistence',

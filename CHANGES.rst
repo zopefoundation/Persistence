@@ -1,8 +1,8 @@
 Changelog
 =========
 
-4.1 (unreleased)
-----------------
+4.0.post1 (2023-03-24)
+----------------------
 
 - Add missing ``python_requires`` in ``setup.py``.
 
