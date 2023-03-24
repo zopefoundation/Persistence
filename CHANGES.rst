@@ -8,6 +8,8 @@ Changelog
 
 - Drop support for Python 2.7, 3.5, 3.6.
 
+- Add preliminary support for Python 3.12a5.
+
 
 3.6 (2022-11-17)
 ----------------
