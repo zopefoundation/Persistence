@@ -4,7 +4,7 @@ Changelog
 4.1 (unreleased)
 ----------------
 
-- Add preliminary support for Python 3.12b4.
+- Add preliminary support for Python 3.12rc1.
 
 
 4.0.post1 (2023-03-24)
