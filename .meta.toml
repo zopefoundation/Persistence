@@ -22,6 +22,9 @@ testenv-setenv = [
     "PIP_NO_CACHE = 1",
     ]
 
+[c-code]
+require-cffi = true
+
 [coverage]
 fail-under = 97
 
