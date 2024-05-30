@@ -4,6 +4,8 @@ Changelog
 4.2 (unreleased)
 ----------------
 
+- Drop support for Python 3.7.
+
 - Add preliminary support for Python 3.13 as of 3.13a3.
 
 - Build Windows wheels on GHA.
