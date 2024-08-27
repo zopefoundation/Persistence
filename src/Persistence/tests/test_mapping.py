@@ -31,5 +31,5 @@ class PersistentMappingTests(unittest.TestCase):
         self.assertTrue(issubclass(Dummy, klass))
 
         dummy = Dummy()
-        self.assertTrue(isinstance(dummy, Dummy))
-        self.assertTrue(isinstance(dummy, klass))
+        self.assertIsInstance(dummy, Dummy)
+        self.assertIsInstance(dummy, klass)
