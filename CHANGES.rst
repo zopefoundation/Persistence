@@ -4,6 +4,8 @@ Changelog
 5.1 (unreleased)
 ----------------
 
+- Add final support for Python 3.13.
+
 
 5.0 (2024-05-30)
 ----------------
