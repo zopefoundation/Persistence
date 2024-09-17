@@ -1,7 +1,7 @@
 Changelog
 =========
 
-5.1 (unreleased)
+5.1 (2024-09-17)
 ----------------
 
 - Add final support for Python 3.13.
