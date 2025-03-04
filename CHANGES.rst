@@ -4,6 +4,8 @@ Changelog
 5.2 (unreleased)
 ----------------
 
+- Drop support for Python 3.8.
+
 
 5.1 (2024-09-17)
 ----------------

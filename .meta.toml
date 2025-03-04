@@ -2,7 +2,7 @@
 # https://github.com/zopefoundation/meta/tree/master/config/c-code
 [meta]
 template = "c-code"
-commit-id = "32ea0a11"
+commit-id = "3c1c588c"
 
 [python]
 with-windows = true
@@ -20,9 +20,6 @@ testenv-deps = [
 testenv-setenv = [
     "PIP_NO_CACHE = 1",
     ]
-
-[c-code]
-require-cffi = true
 
 [coverage]
 fail-under = 97
