@@ -4,6 +4,8 @@ Changelog
 5.2 (unreleased)
 ----------------
 
+- Add preliminary support for Python 3.14.
+
 - Drop support for Python 3.8.
 
 
