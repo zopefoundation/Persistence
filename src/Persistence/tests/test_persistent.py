@@ -70,7 +70,6 @@ class P(Persistent):
 
 
 class H1(Persistent):
-
     def __init__(self):
         self.n = 0
 
@@ -80,7 +79,6 @@ class H1(Persistent):
 
 
 class H2(Persistent):
-
     def __init__(self):
         self.n = 0
 
@@ -95,7 +93,6 @@ class H2(Persistent):
 
 
 class PersistenceTest(unittest.TestCase):
-
     def setUp(self):
         self.jar = Jar()
 
@@ -163,12 +160,13 @@ class PersistenceTest(unittest.TestCase):
         self.assertEqual(obj._p_changed, None)
 
     def testSerial(self):
-        noserial = b'\000' * 8
+        noserial = b"\000" * 8
         obj = P()
         self.assertEqual(obj._p_serial, noserial)
 
         def set(val):
             obj._p_serial = val
+
         self.assertRaises(ValueError, set, 1)
         self.assertRaises(ValueError, set, "0123")
         self.assertRaises(ValueError, set, "012345678")
@@ -235,11 +233,12 @@ class PersistenceTest(unittest.TestCase):
     def test_compilation(self):
         self.assertEqual(CAPI, not (IS_PYPY or IS_PURE))
         try:
-            import persistent.cPersistence  # noqa: F401 unused, needed for Py3
+            import persistent.cPersistence  # noqa: F401 needed for CPython
 
             from Persistence import _Persistence
+
             cPersistent = _Persistence.Persistent
-        except ImportError:
+        except ImportError:  # ModuleNotFoundError is wrong here
             cPersistent = None  # PyPy never has a C module.
         if CAPI:  # pragma: no cover
             self.assertEqual(Persistent, cPersistent)
