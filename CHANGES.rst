@@ -4,6 +4,10 @@ Change log
 5.5 (unreleased)
 ----------------
 
+- Add support for automatically building and publishing Windows/ARM64 wheels.
+
+- Add support for automatically building and publishing source distributions.
+
 
 5.4 (2025-11-16)
 ----------------
