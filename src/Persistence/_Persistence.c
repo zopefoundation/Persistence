@@ -279,7 +279,7 @@ _Persistence_module_exec(PyObject *module)
     ((PyTypeObject *)meta)->tp_setattro = MetaClass_setattro;
     PyType_Modified((PyTypeObject *)meta);
 
-    state->MetaClass = (PyTypeObject *)meta;
+    state->MetaClass = meta;
 
     if (PyModule_AddObjectRef(module, "MetaClass", meta) < 0)
         goto error;
@@ -328,7 +328,7 @@ _Persistence_module_exec(PyObject *module)
     if (args == NULL)
         goto error;
 
-    klass = PyObject_CallObject((PyObject *)state->MetaClass, args);
+    klass = PyObject_CallObject(state->MetaClass, args);
     if (klass == NULL)
         goto error;
 
