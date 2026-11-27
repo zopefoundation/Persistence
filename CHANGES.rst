@@ -4,7 +4,32 @@ Change log
 5.7 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Make the ``Persistence.Persistent`` C type heap-allocated, and the
+  ``Persistence._Persistence`` extension module use PEP 489
+  multi-phase initialization.
+
+  This change is required for compatibility with ``persistent``
+  releases which heap-allocate their own ``Persistent`` type:  CPython
+  forbids static types from inheriting from heap types.  The Zope
+  stacks are known to define no C-level subclasses of
+  ``Persistence.Persistent``; should any exist elsewhere, they must
+  make the corresponding change.  The extension remains compatible
+  with older, static-type ``persistent`` releases as well.
+
+  Consequences of the type itself now being a heap type:
+
+  - The type continues to enforce ExtensionClass's rule barring dunder
+    attribute names on the class object (e.g.
+    ``Persistence.Persistent.__foo__``), now through a private
+    metaclass, itself a subclass of
+    ``ExtensionClass.ExtensionClass``:  Python classes deriving from
+    ``Persistence.Persistent`` resolve to it, as they previously
+    resolved to ``ExtensionClass.ExtensionClass``, and inherit the
+    same discipline.
+
+  (A behavioral delta in ghosting of ``__slots__``-based subclasses
+  traces to the related ``persistent`` change, not to this one;  see
+  the persistent release notes for the details.)
 
 
 5.6 (2026-11-21)

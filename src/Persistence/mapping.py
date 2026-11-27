@@ -14,23 +14,31 @@
 
 from abc import ABCMeta
 
-from ExtensionClass import ExtensionClass
 from persistent.mapping import PersistentMapping as _BasePersistentMapping
 
+from Persistence import CAPI
 from Persistence import Persistent
 
 
-class _Meta(ExtensionClass, ABCMeta):
+if CAPI:  # pragma: no cover
+    # The C implementation creates ``Persistent`` with its own
+    # ExtensionClass metaclass, which bridges like the C metaclass do.
+    from Persistence._Persistence import MetaClass as _ECMeta
+else:
+    from ExtensionClass import ExtensionClass as _ECMeta
+
+
+class _Meta(_ECMeta, ABCMeta):
     # persistent.mapping is based on collections.UserDict,
     # which has an ABCMeta class. Reconcile this with the
     # ExtensionClass meta class, by ignoring the ABCMeta registration.
 
     def __new__(cls, *args, **kw):
         # Ignore ABCMeta.
-        return ExtensionClass.__new__(cls, *args, **kw)
+        return _ECMeta.__new__(cls, *args, **kw)
 
-    __instancecheck__ = ExtensionClass.__instancecheck__
-    __subclasscheck__ = ExtensionClass.__subclasscheck__
+    __instancecheck__ = _ECMeta.__instancecheck__
+    __subclasscheck__ = _ECMeta.__subclasscheck__
 
 
 class PersistentMapping(Persistent, _BasePersistentMapping, metaclass=_Meta):
